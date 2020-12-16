@@ -7,6 +7,7 @@
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
         >vue-cli documentation</a
       >.
+      <img src="../assets/coffee.png" alt="" />
     </p>
     <h3>Installed CLI Plugins</h3>
     <ul>
@@ -96,11 +97,11 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: 'HelloWorld',
   props: {
     msg: String
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
