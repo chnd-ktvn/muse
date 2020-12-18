@@ -14,12 +14,14 @@
                 <template v-slot:card="{ card }">
                   <div
                     style="width: 100%; height: 100%; color: white; border-radius: 20px"
+                    v-for="(coupon, index) in coupons"
+                    :key="index"
                   >
                     <b-card :style="{ background: card.background }">
                       <b-container class="b-container-card">
                         <img src="../assets/image 2.png" alt="" />
                         <b-card-text class="b-card-text">
-                          Beef Spaghetti <br />20% OFF<br />
+                          {{ coupon.coupon_code }} <br />20% OFF<br />
                           Buy 1 Choco Oreo and get 20% off <br />
                           for Beef Spaghetti <br />
                           COUPON CODE <br />
@@ -56,6 +58,7 @@
 <script>
 // import Vue from 'vue'
 import VueCardStack from 'vue-card-stack'
+import axios from 'axios'
 export default {
   components: {
     VueCardStack
@@ -68,7 +71,22 @@ export default {
         { background: '#e2c58a' },
         { background: '#fc8890' },
         { background: '#b35d7f' }
-      ]
+      ],
+      coupons: []
+    }
+  },
+  created() {
+    this.getCoupon()
+  },
+  methods: {
+    getCoupon() {
+      axios
+        .get('http://localhost:3050/coupon/')
+        .then(response => {
+          console.log(response)
+          this.coupons = response.data.data
+        })
+        .catch(error => console.log(error))
     }
   }
 }

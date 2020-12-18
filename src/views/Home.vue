@@ -12,13 +12,19 @@
         <b-col lg="8" sm="12" bg-variant="primary" class="b">
           <main>
             <b-container>
-              <b-nav tabs align="center">
-                <b-nav-item active>Favorite Product</b-nav-item>
-                <b-nav-item>Coffee</b-nav-item>
-                <b-nav-item>Non Coffee</b-nav-item>
-                <b-nav-item>Foods</b-nav-item>
-                <b-nav-item>Add-on</b-nav-item>
-                <b-nav-item-dropdown
+              <b-nav
+                tabs
+                align="center"
+                class="dd"
+                v-for="(item, index) in category"
+                :key="index"
+              >
+                <b-nav-item
+                  active
+                  @click="getProductByCategory(item.category_name)"
+                  >{{ item.category_name }}</b-nav-item
+                >
+                <!-- <b-nav-item-dropdown
                   id="my-nav-dropdown"
                   text="Sort By:"
                   toggle-class="nav-link-custom"
@@ -27,7 +33,7 @@
                   <b-dropdown-item>Name</b-dropdown-item>
                   <b-dropdown-item>Price</b-dropdown-item>
                   <b-dropdown-item>Created By</b-dropdown-item>
-                </b-nav-item-dropdown>
+                </b-nav-item-dropdown> -->
               </b-nav>
               <b-row>
                 <b-col
@@ -74,11 +80,13 @@ export default {
   },
   data() {
     return {
-      products: []
+      products: [],
+      category: []
     }
   },
   created() {
     this.getProduct()
+    this.getCategory()
   },
   methods: {
     getProduct() {
@@ -96,15 +104,25 @@ export default {
     },
     getCategory() {
       axios
-        .get(
-          `http://localhost:3050/product?orderBy=category_id&page=1&limit=10`
-        )
+        .get(`http://localhost:3050/category/`)
         .then(response => {
           console.log(response)
-          this.products = response.data.data
+          this.category = response.data.data
         })
         .catch(error => {
           console.log(error)
+        })
+    },
+    getProductByCategory(category_name) {
+      console.log(category_name)
+      this.getProductCategory(category_name)
+    },
+    getProductCategory(category_name) {
+      console.log('nyala' + category_name)
+      axios
+        .get(`http://localhost:3050/category/${category_name}`)
+        .then(response => {
+          console.log(response)
         })
     }
   }
@@ -117,5 +135,8 @@ export default {
 }
 .b {
   background-color: sandybrown;
+}
+.dd {
+  display: inline-block;
 }
 </style>
