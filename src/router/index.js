@@ -1,30 +1,57 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '../views/Home.vue'
+import Product from '../views/Product.vue'
+import ProductAdmin from '../views/ProductAdmin.vue'
+import CreateProduct from '../views/CreateProduct.vue'
+import ProductDetail from '../views/ProductDetail.vue'
+import Payment from '../views/Payment.vue'
+import History from '../views/History.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: '/product',
+    name: 'Product',
+    component: Product
+  },
+  {
+    path: '/productAdmin',
+    name: 'productAdmin',
+    component: ProductAdmin
+  },
+  {
+    path: '/createProduct',
+    name: 'createProduct',
+    component: CreateProduct
+  },
+  {
+    path: '/productDetail/:id',
+    name: 'productDetail',
+    component: ProductDetail
+  },
+  {
+    path: '/payment',
+    name: 'payment',
+    component: Payment
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: History
   }
-];
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
-});
+})
 
-export default router;
+export default router
