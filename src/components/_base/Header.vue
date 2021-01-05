@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <b-navbar toggleable="lg" type="light" class="header">
+  <div class="header">
+    <b-navbar toggleable="lg" type="light">
       <b-navbar type="light">
-        <b-navbar-brand class="navbar">
+        <b-navbar-brand>
           <img
             src="../../assets/coffee.png"
             class="d-inline-block align-top"
@@ -15,35 +15,31 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="nav">
-          <router-link to="/" class="link">Home</router-link>
-          <router-link to="/product" class="link">Product</router-link>
-          <router-link to="/productDetail" class="link">Detail</router-link>
-          <router-link to="/productDetail" class="link">Your Cart</router-link>
-          <router-link to="/productDetail" class="link">History</router-link>
+          <router-link to="/">Home</router-link>
+          <router-link to="/product">Product</router-link>
+          <router-link to="/payment">Your Cart</router-link>
+          <router-link to="/history">History</router-link>
         </b-navbar-nav>
 
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto navbar-right">
           <button v-on:click="isHidden = !isHidden" class="ic-search">
             <b-icon icon="search"></b-icon>
           </button>
           <b-nav-form v-if="!isHidden" class="nav-form">
             <b-form-input
               size="sm"
-              class="mr-sm-2 form-input"
               placeholder="Search"
+              style="width: 160px; text-align: center; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"
               name="msg"
               v-model="childMessage"
+              v-on:keyup.enter="emitToParent"
             ></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" v-on:click="emitToParent"
-              >Search</b-button
-            >
           </b-nav-form>
           <span class="chat-notif">
             <img class="img chat" src="../../assets/ic-chat.png" />
           </span>
           <a>
-            <img class="img girl-img" src="../../assets/girl.png" />
+            <img class="img user-img" src="../../assets/girl.png" />
           </a>
         </b-navbar-nav>
       </b-collapse>
@@ -52,6 +48,7 @@
 </template>
 <script>
 export default {
+  name: 'Header',
   data() {
     return {
       childMessage: '',
@@ -69,16 +66,28 @@ export default {
 .header {
   background-color: white;
   border-bottom: 1px solid rosybrown;
-}
-.navbar {
   color: black;
   font-family: cursive;
+  text-align: center;
 }
-.link {
+.navbar-brand {
+  margin: 0 40px;
+}
+.navbar-nav {
+  margin: 0 40px;
+}
+.navbar-right {
+  justify-content: center;
+}
+.nav {
+  margin: 0 auto;
+}
+.nav a {
   color: black;
-  margin: 0 5px;
+  margin: 0 25px;
 }
-.link:hover {
+.nav a:hover,
+.nav a.router-link-exact-active {
   font-weight: bold;
   text-decoration: none;
 }
@@ -91,9 +100,6 @@ export default {
   border: none;
   padding: 0 10px;
 }
-.form-input:input {
-  width: 50px;
-}
 .chat-notif {
   padding: 5px;
 }
@@ -101,11 +107,22 @@ export default {
   height: 20px;
   cursor: pointer;
 }
-.girl-img {
-  border-radius: 100%;
+.user-img {
+  border-radius: 50%;
   padding: 0 10px;
-  padding-top: 5px;
-  height: 25px;
+  margin-top: 5px;
+  height: 23px;
   cursor: pointer;
+}
+@media screen and (max-width: 992px) {
+  .navbar-brand {
+    margin: 0;
+  }
+  .nav-form {
+    margin: 0 auto;
+  }
+  .header .navbar-right {
+    margin: 0 auto;
+  }
 }
 </style>

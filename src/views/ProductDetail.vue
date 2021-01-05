@@ -192,7 +192,7 @@ export default {
   },
   methods: {
     getProductById(id) {
-      axios.get(`http://localhost:3050/product/${id}`).then(response => {
+      axios.get(`http://localhost:1010/product/${id}`).then(response => {
         console.log(response)
         this.products = response.data.data
         this.product_name = response.data.data[0].product_name

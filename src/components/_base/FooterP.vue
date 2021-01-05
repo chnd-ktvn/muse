@@ -1,49 +1,51 @@
 <template>
-  <div class="footer">
-    <b-container>
-      <b-row>
-        <b-col sm="12" md="12" lg="7" class="footer-des">
-          <b-row class="brand">
-            <b-container>
-              <img src="../../assets/coffee.png" />
-              <h1>MuseCoffee</h1>
-            </b-container>
-          </b-row>
+  <div>
+    <b-row class="footer">
+      <!-- <b-container> -->
+      <!-- <b-row> -->
+      <b-col sm="6" md="6" lg="6" class="footer-des">
+        <b-row class="brand">
           <b-container>
-            <p class="des">
-              MuseCoffee is a store that sells some good meals, and especially
-              coffee. We provide high quality beans
-            </p>
+            <img src="../../assets/coffee.png" />
+            <h1>MuseCoffee</h1>
           </b-container>
-          <section class="img">
-            <span class="fb"> </span>
-            <span class="twitter"> </span>
-            <span class="ig"> </span>
-          </section>
-          <p class="copy">&#169;2020MuseCoffee</p>
-        </b-col>
-        <b-col sm="12" md="12" lg="5" class="merge">
-          <b-row>
-            <b-col class="footer-product">
-              <p><b>Produk</b></p>
-              <a href="#">Download</a>
-              <a href="#">Pricing</a>
-              <a href="#">Locations</a>
-              <a href="#">Countries</a>
-              <a href="#">Blog</a>
-            </b-col>
-            <b-col class="footer-engage">
-              <p><b>Engage</b></p>
-              <a href="#">Muse Coffee?</a>
-              <a href="#">FAQ</a>
-              <a href="#">About Us</a>
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of service</a>
-            </b-col>
-          </b-row>
-        </b-col>
-      </b-row>
-    </b-container>
+        </b-row>
+        <b-container>
+          <p class="des">
+            MuseCoffee is a store that sells some good meals, and especially
+            coffee. We provide high quality beans
+          </p>
+        </b-container>
+        <section class="img">
+          <span class="fb"> </span>
+          <span class="twitter"> </span>
+          <span class="ig"> </span>
+        </section>
+        <p class="copy">&#169;2020MuseCoffee</p>
+      </b-col>
+      <b-col sm="6" md="6" lg="6" class="merge">
+        <b-row>
+          <b-col class="footer-product">
+            <p><b>Produk</b></p>
+            <a href="#">Download</a>
+            <a href="#">Pricing</a>
+            <a href="#">Locations</a>
+            <a href="#">Countries</a>
+            <a href="#">Blog</a>
+          </b-col>
+          <b-col class="footer-engage">
+            <p><b>Engage</b></p>
+            <a href="#">Muse Coffee?</a>
+            <a href="#">FAQ</a>
+            <a href="#">About Us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of service</a>
+          </b-col>
+        </b-row>
+      </b-col>
+      <!-- </b-row> -->
+      <!-- </b-container> -->
+    </b-row>
   </div>
 </template>
 <script>

@@ -29,10 +29,14 @@
                 variant="secondary"
                 class="m-2"
               >
-                <b-dropdown-item @click="handleName">Name</b-dropdown-item>
-                <b-dropdown-item @click="handlePrice">Price</b-dropdown-item>
+                <b-dropdown-item @click="handleName"
+                  >Name (ASC)</b-dropdown-item
+                >
+                <b-dropdown-item @click="handlePrice"
+                  >Price (from lower to highest)</b-dropdown-item
+                >
                 <b-dropdown-item @click="handlePosted"
-                  >Posted Date</b-dropdown-item
+                  >Posted Date (from oldest to newest)</b-dropdown-item
                 >
               </b-dropdown>
               <Card :products="products" />
@@ -77,6 +81,7 @@ export default {
     return {
       products: [],
       category: [],
+      category_id: null,
       sortName: 'product_name',
       sortPrice: 'product_price',
       sortPosted: 'product_created_at',
@@ -89,14 +94,14 @@ export default {
     }
   },
   created() {
-    this.handleName()
+    this.handlePosted()
     this.getCategory()
   },
   methods: {
     getProduct() {
       axios
         .get(
-          `http://localhost:3050/product?orderBy=${this.sort}&page=${this.page}&limit=${this.limit}`
+          `http://localhost:3040/product?orderBy=${this.sort}&page=${this.page}&limit=${this.limit}`
         )
         .then(response => {
           console.log(response)
@@ -109,7 +114,7 @@ export default {
     },
     getCategory() {
       axios
-        .get(`http://localhost:3050/category/`)
+        .get(`http://localhost:3040/category/`)
         .then(response => {
           console.log(response)
           this.category = response.data.data
@@ -120,13 +125,35 @@ export default {
     },
     getProductByCategory(category_id) {
       console.log(category_id)
-      this.getProductCategory(category_id)
+      this.category_id = category_id
+      // console.log(this.category_id)
+      this.getProductCategory(this.category_id)
     },
     getProductCategory(category_id) {
       console.log('nyala' + category_id)
+      // ${category_id}
+      this.category_id = category_id
+      this.page = 1
+      // this.limit = 3
+      console.log(this.page)
+      console.log(this.category_id)
       axios
         .get(
-          `http://localhost:3050/product/category?categoryId=${category_id}&orderBy=${this.sort}&page=${this.page}&limit=${this.limit}`
+          `http://localhost:3040/product/category?categoryId=${this.category_id}&orderBy=${this.sort}&page=${this.page}&limit=${this.limit}`
+        )
+        .then(response => {
+          console.log(response)
+          this.totalRows = response.data.pagination.totalData
+          this.products = response.data.data
+        })
+    },
+    onChildClick(value) {
+      this.fromChild = value
+      this.page = 1
+      console.log(value)
+      axios
+        .get(
+          `http://localhost:3040/product/searchByName?name=${value}&orderBy=${this.sort}&page=${this.page}&limit=${this.limit}`
         )
         .then(response => {
           console.log(response)
@@ -135,31 +162,105 @@ export default {
         })
     },
     handleName() {
-      this.sort = this.sortName
-      this.getProduct()
+      // yang belom ditambhakan bagaimana menangani klik sort untuk producct all dan untuk product by category
+      // this.sort = this.sortName
+      // this.category_id = category_id
+      // this.getProductCategory(this.category_id)
+      // this.getProduct()
+      // yang tengah itu tambahan
+      if (this.category_id !== null) {
+        this.sort = this.sortName
+        // this.page = 1
+        console.log(this.category_id)
+        this.getProductCategory(this.category_id)
+      } else if (this.fromChild != '') {
+        this.sort = this.sortName
+        // this.page = 1
+        console.log(this.fromChild)
+        this.onChildClick(this.fromChild)
+      } else {
+        this.sort = this.sortName
+        console.log(this.category_id)
+        this.getProduct()
+      }
     },
     handlePrice() {
-      this.sort = this.sortPrice
-      this.getProduct()
+      // this.sort = this.sortPrice
+      // this.getProduct()
+      // if (this.category_id !== null) {
+      //   this.sort = this.sortPrice
+      //   console.log(this.category_id)
+      //   this.getProductCategory(this.category_id)
+      // } else {
+      //   this.sort = this.sortPrice
+      //   console.log(this.category_id)
+      //   this.getProduct()
+      // }
+      if (this.category_id !== null) {
+        this.sort = this.sortPrice
+        // this.page = 1
+        console.log(this.category_id)
+        this.getProductCategory(this.category_id)
+      } else if (this.fromChild != '') {
+        this.sort = this.sortPrice
+        // this.page = 1
+        console.log(this.fromChild)
+        this.onChildClick(this.fromChild)
+      } else {
+        this.sort = this.sortPrice
+        console.log(this.category_id)
+        this.getProduct()
+      }
     },
     handlePosted() {
-      this.sort = this.sortPosted
-      this.getProduct()
-    },
-    onChildClick(value) {
-      this.fromChild = value
-      console.log(value)
-      axios
-        .get(`http://localhost:3050/product/searchByName/${value}`)
-        .then(response => {
-          console.log(response)
-          this.products = response.data.data
-        })
+      // this.sort = this.sortPosted
+      // this.getProduct()
+      // if (this.category_id !== null) {
+      //   this.sort = this.sortPosted
+      //   console.log(this.category_id)
+      //   this.getProductCategory(this.category_id)
+      // } else {
+      //   this.sort = this.sortPosted
+      //   console.log(this.category_id)
+      //   this.getProduct()
+      // }
+      if (this.category_id !== null) {
+        this.sort = this.sortPosted
+        // this.page = 1
+        console.log(this.category_id)
+        this.getProductCategory(this.category_id)
+      } else if (this.fromChild != '') {
+        this.sort = this.sortPosted
+        // this.page = 1
+        console.log(this.fromChild)
+        this.onChildClick(this.fromChild)
+      } else {
+        this.sort = this.sortPosted
+        console.log(this.category_id)
+        this.getProduct()
+      }
     },
     handlePageChange(numberPage) {
       console.log(numberPage)
-      this.page = numberPage
-      this.getProduct()
+      // this.page = numberPage
+      // this.getProduct()
+      if (this.category_id !== null) {
+        // this.sort = this.sortName
+        this.page = numberPage
+        // this.page = 1
+        console.log(this.category_id)
+        this.getProductCategory(this.category_id)
+      } else if (this.fromChild != '') {
+        // this.sort = this.sortName
+        this.page = numberPage
+        // this.page = 1
+        console.log(this.fromChild)
+        this.onChildClick(this.fromChild)
+      } else {
+        this.page = numberPage
+        console.log(this.category_id)
+        this.getProduct()
+      }
     }
   }
 }

@@ -1,49 +1,55 @@
 <template>
-  <div class="footer">
-    <b-container>
-      <b-row>
-        <b-col sm="12" md="12" lg="7" class="footer-des">
-          <b-row class="brand">
-            <b-container>
-              <img src="../../assets/coffee.png" />
-              <h1>MuseCoffee</h1>
-            </b-container>
-          </b-row>
+  <div>
+    <b-row class="footer">
+      <b-col sm="7" md="7" lg="7" class="footer-des">
+        <b-row class="brand">
           <b-container>
-            <p class="des">
-              MuseCoffee is a store that sells some good meals, and especially
-              coffee. We provide high quality beans
-            </p>
+            <img src="../../assets/coffee.png" />
+            <h1>MuseCoffee</h1>
           </b-container>
-          <section class="img">
-            <span class="fb"> </span>
-            <span class="twitter"> </span>
-            <span class="ig"> </span>
-          </section>
-          <p class="copy">&#169;2020MuseCoffee</p>
-        </b-col>
-        <b-col sm="12" md="12" lg="5" class="merge">
-          <b-row>
-            <b-col class="footer-product">
-              <p><b>Produk</b></p>
+        </b-row>
+        <b-container>
+          <p class="des">
+            MuseCoffee is a store that sells some good meals, and especially
+            coffee. We provide high quality beans
+          </p>
+        </b-container>
+        <section class="img">
+          <span class="fb"> </span>
+          <span class="twitter"> </span>
+          <span class="ig"> </span>
+        </section>
+        <p class="copy">&#169;2020MuseCoffee</p>
+      </b-col>
+      <b-col sm="5" md="5" lg="5" class="merge">
+        <b-container>
+          <b-row class="footer-product">
+            <b-col lg="6">
+              <p><b>Product</b></p>
               <a href="#">Download</a>
               <a href="#">Pricing</a>
               <a href="#">Locations</a>
+            </b-col>
+            <b-col lg="6">
               <a href="#">Countries</a>
               <a href="#">Blog</a>
             </b-col>
-            <b-col class="footer-engage">
+          </b-row>
+          <b-row class="footer-engage">
+            <b-col lg="6">
               <p><b>Engage</b></p>
               <a href="#">Muse Coffee?</a>
               <a href="#">FAQ</a>
               <a href="#">About Us</a>
+            </b-col>
+            <b-col lg="6">
               <a href="#">Privacy Policy</a>
               <a href="#">Terms of service</a>
             </b-col>
           </b-row>
-        </b-col>
-      </b-row>
-    </b-container>
+        </b-container>
+      </b-col>
+    </b-row>
   </div>
 </template>
 <script>
@@ -58,6 +64,7 @@ export default {
   padding: 20px 0;
   text-align: center;
   font-size: 18px;
+  display: flex;
 }
 h1 {
   margin-top: 3px;
@@ -144,13 +151,31 @@ a:hover {
 }
 .merge {
   display: flex;
-  justify-content: center;
-  align-content: center;
+  flex-direction: column;
+  text-align: left;
+  /* justify-content: center; */
+  /* align-content: center; */
 }
 .footer-product {
-  flex: 6;
+  flex-direction: row;
+  /* flex: 3; */
 }
 .footer-engage {
-  flex: 6;
+  flex-direction: row;
+  /* flex: 3; */
+}
+@media screen and (max-width: 992px) {
+  .merge {
+    display: flex;
+    flex-direction: row;
+  }
+  .footer-product {
+    flex-direction: column;
+    flex: 3;
+  }
+  .footer-engage {
+    flex-direction: column;
+    flex: 3;
+  }
 }
 </style>
