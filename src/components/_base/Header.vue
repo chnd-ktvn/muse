@@ -22,7 +22,11 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto navbar-right">
-          <button v-on:click="isHidden = !isHidden" class="ic-search">
+          <button
+            :disabled="isDisabled"
+            v-on:click="isHidden = !isHidden"
+            class="ic-search"
+          >
             <b-icon icon="search"></b-icon>
           </button>
           <b-nav-form v-if="!isHidden" class="nav-form">
@@ -38,24 +42,59 @@
           <span class="chat-notif">
             <img class="img chat" src="../../assets/ic-chat.png" />
           </span>
-          <a>
-            <img class="img user-img" src="../../assets/girl.png" />
-          </a>
+          <b-nav-item-dropdown right>
+            <template #button-content>
+              <a>
+                <img class="img user-img" src="../../assets/girl.png" />
+              </a>
+            </template>
+            <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Header',
   data() {
     return {
       childMessage: '',
-      isHidden: true
+      isHidden: true,
+      isDisabled: null
     }
   },
+  computed: {
+    // this.lalap()
+    // ...mapGetters({
+    //   isDisabled: 'getApaAja' || undefined ? true : null
+    // })
+  },
+  created() {
+    this.lalap()
+  },
   methods: {
+    ...mapGetters(['getApaAja']),
+    lalap() {
+      if (this.getApaAja() === false) {
+        console.log(this.getApaAja())
+        this.isDisabled = this.getApaAja()
+        console.log(this.isDisabled + 'inih')
+      } else if (this.getApaAja() === undefined) {
+        this.isDisabled = true
+      }
+      // console.log(this.getApaAja()
+      //   this.isDisabled = this.getApaAja()
+      //   console.log(this.isDisabled + 'inih')
+      // if (this.getApaAja() === false) {
+
+      // } else {
+      //   this.isDisabled = true
+      // }
+    },
     emitToParent() {
       this.$emit('childToParent', this.childMessage)
     }
@@ -101,18 +140,18 @@ export default {
   padding: 0 10px;
 }
 .chat-notif {
-  padding: 5px;
+  padding: 8px 5px;
+  margin-right: -7px;
 }
 .chat {
-  height: 20px;
+  height: 22px;
   cursor: pointer;
 }
 .user-img {
   border-radius: 50%;
   padding: 0 10px;
-  margin-top: 5px;
   height: 23px;
-  cursor: pointer;
+  margin-bottom: 4px;
 }
 @media screen and (max-width: 992px) {
   .navbar-brand {

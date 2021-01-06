@@ -12,14 +12,18 @@
   </b-row>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  props: {
-    products: []
-  },
   data() {
     return {
       photo: '../../assets/'
     }
+  },
+  computed: {
+    ...mapGetters({
+      products: 'getDataProduct'
+      // productsByCategory: 'getDataProductbyCategory'
+    })
   },
   methods: {
     detailProduct(product_id) {

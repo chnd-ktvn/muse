@@ -51,10 +51,10 @@
                     required
                   ></b-form-input>
                   <b-form-invalid-feedback :state="validationPassword">
-                    Your user ID must be 5-12 characters long.
+                    Your password must be 7-12 characters long !
                   </b-form-invalid-feedback>
                   <b-form-valid-feedback :state="validationPassword">
-                    Looks Good.
+                    Marvelous !
                   </b-form-valid-feedback>
                 </b-form-group>
                 <b-form-group
@@ -64,23 +64,23 @@
                 >
                   <b-form-input
                     id="input-phone-number"
+                    type="number"
                     v-model="form.user_phone_number"
                     :state="validationPhoneNumber"
                     placeholder="Enter your phone number"
                   ></b-form-input>
                   <b-form-invalid-feedback :state="validationPhoneNumber">
-                    Your phone number must be 10-13 numbers long !
-                  </b-form-invalid-feedback>
-                  <b-form-invalid-feedback :state="validationPhone">
-                    Must contain +62 (Indonesia country code) !
+                    Your phone number must be 10-13 numbers long & Must contain
+                    62 !
                   </b-form-invalid-feedback>
                   <b-form-valid-feedback :state="validationPhoneNumber">
-                    Looks Good.
+                    Marvelous !
                   </b-form-valid-feedback>
                 </b-form-group>
                 <b-button
                   type="submit"
                   class="button"
+                  :disabled="!validation"
                   style="width: 100%; background-color: #FFBA33; border-radius: 15px; border: none; color: black;"
                   >Sign Up</b-button
                 >
@@ -133,24 +133,22 @@ export default {
   },
   computed: {
     validationPassword() {
+      // this.form.user_password.match(/^(?=.*[A-Z])$/) &&
       return (
-        this.form.user_password.match() > 4 &&
-        this.form.user_password.length > 4 &&
+        this.form.user_password.length > 6 &&
         this.form.user_password.length < 13
-      )
-    },
-    validationPhone() {
-      return (
-        this.form.user_phone_number[0] === '+' &&
-        this.form.user_phone_number[1] === '6' &&
-        this.form.user_phone_number[2] === '2'
       )
     },
     validationPhoneNumber() {
       return (
         this.form.user_phone_number.length > 9 &&
-        this.form.user_phone_number.length < 14
+        this.form.user_phone_number.length < 13 &&
+        this.form.user_phone_number[0] === '6' &&
+        this.form.user_phone_number[1] === '2'
       )
+    },
+    validation() {
+      return this.validationPassword && this.validationPhoneNumber
     }
   },
   methods: {
@@ -163,8 +161,12 @@ export default {
     },
     ...mapActions(['signup']),
     onSubmit() {
-      console.log(this.form)
-      this.signup(this.form)
+      const form = {
+        user_email: this.form.user_email,
+        user_password: this.form.user_password,
+        user_phone_number: '+' + this.form.user_phone_number
+      }
+      this.signup(form)
         .then(result => {
           this.msg = result.data.msg
           this.makeToast('success')
