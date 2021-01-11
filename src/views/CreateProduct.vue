@@ -1,16 +1,14 @@
 <template>
-  <div class="home">
-    <Header class="wrapper" />
+  <div>
+    <HeaderAdmin class="wrapper" />
     <b-container>
       <b-row>
-        <!-- <b-form @submit="onSubmit" @reset="onReset" v-if="show"> -->
-        <b-col md="5" class="a">
+        <b-col lg="5" md="5" sm="12">
           <CreateProductL />
         </b-col>
-        <b-col md="7" class="w">
+        <b-col lg="7" md="7" sm="12">
           <CreateProductR />
         </b-col>
-        <!-- </b-form> -->
       </b-row>
     </b-container>
     <Footer />
@@ -18,14 +16,14 @@
 </template>
 
 <script>
-import Header from '../components/_base/Header.vue'
+import HeaderAdmin from '../components/_base/HeaderAdmin.vue'
 import CreateProductR from '../components/createProduct/CreateProductR.vue'
 import CreateProductL from '../components/createProduct/CreateProductL.vue'
 import Footer from '../components/_base/Footer.vue'
 export default {
-  name: 'Home',
+  name: 'CreateProduct',
   components: {
-    Header,
+    HeaderAdmin,
     CreateProductR,
     CreateProductL,
     Footer
@@ -38,31 +36,8 @@ export default {
   z-index: 10;
   top: 0;
 }
-.a {
-  background-color: blanchedalmond;
-}
-.w {
-  background-color: chartreuse;
-}
-/* .text-center {
-  font-size: 40px;
+.row {
+  margin: 20px 0;
   font-family: cursive;
 }
-.button {
-  background-color: rosybrown;
-}
-.link {
-  color: white;
-  text-decoration: none;
-}
-@media screen and (max-width: 768px) {
-  .text-center {
-    font-size: 20px;
-  }
-}
-@media screen and (max-width: 576px) {
-  .text-center {
-    font-size: 20px;
-  }
-} */
 </style>

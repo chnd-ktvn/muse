@@ -87,7 +87,7 @@
 </template>
 <script>
 import FooterP from '../components/_base/FooterP.vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Login',
   components: {
@@ -102,6 +102,9 @@ export default {
       msg: ''
     }
   },
+  computed: {
+    ...mapGetters(['getUserRole'])
+  },
   methods: {
     makeToast(variant = null) {
       this.$bvToast.toast(`${this.msg}`, {
@@ -110,13 +113,18 @@ export default {
         solid: true
       })
     },
-    ...mapActions(['login']),
+    ...mapActions(['login', 'getUserById']),
     onSubmit() {
       this.login(this.form)
         .then(result => {
+          this.getUserById()
           this.msg = result.data.msg
           this.makeToast('success')
-          this.$router.push('/product') // ini tendang nya masih bingung
+          if (this.getUserRole === 2) {
+            this.$router.push('/productAdmin')
+          } else {
+            this.$router.push('/product')
+          }
         })
         .catch(error => {
           this.msg = error.response.data.msg

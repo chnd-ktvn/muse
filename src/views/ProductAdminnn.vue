@@ -1,7 +1,8 @@
 <template>
-  <div class="productAdmin">
-    <HeaderAdmin v-on:childToParent="onChildClick" class="wrapper" />
+  <div class="Product">
+    <Header v-on:childToParent="onChildClick" class="wrapper" />
     <b-container class="bv-example-row">
+      <p>ADMIN</p>
       <b-row>
         <b-col lg="4" md="12" sm="12" class="aside">
           <Aside />
@@ -31,22 +32,16 @@
                 class="m-2"
               >
                 <b-dropdown-item style="font-size: 18px" @click="handleName"
-                  >Name</b-dropdown-item
+                  >Name (ASC)</b-dropdown-item
                 >
                 <b-dropdown-item style="font-size: 18px" @click="handlePrice"
-                  >Price</b-dropdown-item
+                  >Price (from lower to highest)</b-dropdown-item
                 >
                 <b-dropdown-item style="font-size: 18px" @click="handlePosted"
-                  >Posted Date</b-dropdown-item
+                  >Posted Date (from newest to oldest)</b-dropdown-item
                 >
               </b-dropdown>
-              <b-button pill>
-                <router-link to="/createProduct" class="link"
-                  >Create Product
-                </router-link></b-button
-              >
-              <!-- v-on:childToParentCard="onChildClickCard() -->
-              <CardButton />
+              <Card />
               <b-pagination
                 v-model="currentPage"
                 :total-rows="rows"
@@ -65,18 +60,18 @@
 </template>
 
 <script>
-import HeaderAdmin from '../components/_base/HeaderAdmin.vue'
+import Header from '../components/_base/Header.vue'
 import Footer from '../components/_base/Footer.vue'
 import Aside from '../components/Aside.vue'
-import CardButton from '../components/_base/CardButton.vue'
+import Card from '../components/_base/Card.vue'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'ProductAdmin',
   components: {
-    HeaderAdmin,
+    Header,
     Aside,
-    CardButton,
+    Card,
     Footer
   },
   computed: {
@@ -118,7 +113,6 @@ export default {
       'getCategory',
       'searchingProduct'
     ]),
-    // 'deleteProductById'
     ...mapMutations(['changePage', 'changeSortingBy', 'changeCategory']),
     ...mapMutations(['lala']),
     getProductByCategory(category_id) {
@@ -163,7 +157,7 @@ export default {
         this.searchingProduct()
       }
     },
-    handlePosted() { 
+    handlePosted() {
       if (this.search === null && this.categoryId === null) {
         this.changeSortingBy(this.sortPosted)
         this.getProducts()
@@ -196,10 +190,6 @@ export default {
         this.searchingProduct()
       }
     }
-    // onChildClickCard(product_id) {
-    //   this.deleteProductById(product_id)
-    //   this.getProducts()
-    // }
   }
 }
 </script>
@@ -222,10 +212,6 @@ main {
 .category:hover,
 .activer {
   font-weight: bold;
-}
-.link {
-  color: white;
-  text-decoration: none;
 }
 @media screen and (max-width: 768px) {
   .aside {

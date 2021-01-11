@@ -1,60 +1,105 @@
 <template>
   <b-row class="data">
     <b-col md="4" sm="12" v-for="(item, index) in products" :key="index">
-      <b-card class="mb-2 card">
-        <img src="../../assets/veggie-img.png" alt="product photo" />
+      <b-card
+        class="mb-2 card"
+        style="width: 100%;
+            height: 380px;"
+      >
+        <img :src="'http://localhost:3000/' + item.photo" alt="product photo" />
         <b-card-text class="text">
-          {{ item.product_name }} <br />
+          <b>{{ item.product_name }}</b> <br />
           Rp. {{ item.product_price }}
         </b-card-text>
         <b-button
+          @click="deleteProduct(item.product_id)"
           pill
+          block
           class="text del"
-          v-on:click="emitToParentCard(item.product_id)"
           >Delete</b-button
         >
-        <b-button pill class="text up">Update</b-button>
+        <b-button block pill class="text up">Update</b-button>
       </b-card>
     </b-col>
   </b-row>
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  props: {
-    products: []
+  computed: {
+    ...mapGetters({
+      products: 'getDataProduct'
+    })
   },
   data() {
     return {
-      photo: '../../assets/'
+      message: null
     }
   },
   methods: {
+    // ...mapMutations(['getProductId']),
+    ...mapActions(['deleteProductById', 'getProducts']),
     detailProduct(product_id) {
       console.log(product_id)
       this.$router.push({ name: 'productDetail', params: { id: product_id } })
     },
-    emitToParentCard(product_id) {
+    makeToast(variant = null) {
+      this.$bvToast.toast(`${this.message}`, {
+        title: 'MuseCoffee',
+        variant: variant,
+        solid: true
+      })
+    },
+    deleteProduct(product_id) {
       console.log(product_id)
-      this.$emit('childToParentCard', product_id)
+      this.deleteProductById(product_id)
+        .then(result => {
+          this.message = result.data.msg
+          this.getProducts()
+          this.makeToast('success')
+          this.$router.push('/productAdmin')
+        })
+        .catch(error => {
+          this.message = error.response.data.msg
+          this.makeToast('danger')
+        })
+      // console.log(product_id)
+      // this.getProductId(product_id)
+      // this.$emit('childToParentCard', product_id)
     }
   }
 }
 </script>
 <style scoped>
+.data {
+  margin: 15px 0;
+}
 img {
-  border-radius: 100%;
-  object-fit: contain;
-  margin-left: -3px;
+  border-radius: 50%;
+  object-fit: cover;
+  width: 125px;
+  height: 125px;
+  display: flex;
+  margin: 0 auto;
+  margin-top: -15px;
+  justify-content: center;
+  align-items: center;
 }
 .card {
   box-shadow: 0px 6px 25px rgba(106, 64, 41, 0.7);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 95%;
 }
 .card:hover {
   margin-right: 5px;
   margin-left: -8px;
 }
 .text {
+  text-align: center;
   font-family: cursive;
 }
 .up {

@@ -10,6 +10,7 @@ import CreateProduct from '../views/CreateProduct.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import Payment from '../views/Payment.vue'
 import History from '../views/History.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,8 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: { requiresVisitor: true }
   },
   {
     path: '/signup',
@@ -32,7 +34,8 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta: { requiresAuth: true }
   },
   {
     path: '/product',
@@ -42,27 +45,32 @@ const routes = [
   {
     path: '/productAdmin',
     name: 'productAdmin',
-    component: ProductAdmin
+    component: ProductAdmin,
+    meta: { requiresAuth: true }
   },
   {
     path: '/createProduct',
     name: 'createProduct',
-    component: CreateProduct
+    component: CreateProduct,
+    meta: { requiresAuth: true }
   },
   {
     path: '/productDetail/:id',
     name: 'productDetail',
-    component: ProductDetail
+    component: ProductDetail,
+    meta: { requiresAuth: true }
   },
   {
     path: '/payment',
     name: 'payment',
-    component: Payment
+    component: Payment,
+    meta: { requiresAuth: true }
   },
   {
     path: '/history',
     name: 'history',
-    component: History
+    component: History,
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -70,6 +78,26 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.getters.isLogin) {
+      next({ path: './login' })
+    } else {
+      next()
+    }
+  } else if (to.matched.some(record => record.meta.requiresVisitor)) {
+    if (store.getters.isLogin) { // ini yang
+      next({
+        path: '/'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
