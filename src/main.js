@@ -11,6 +11,10 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.config.productionTip = false
 
+Vue.directive('sticky', function(el) {
+  el.style.position = 'sticky'
+})
+
 new Vue({
   router,
   store,

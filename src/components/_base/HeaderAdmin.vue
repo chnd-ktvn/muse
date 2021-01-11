@@ -16,7 +16,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="nav">
           <router-link to="/">Home</router-link>
-          <router-link to="/productAdmin">Product</router-link>
+          <router-link to="/product">Product</router-link>
           <!-- <router-link to="/payment">Your Cart</router-link> -->
           <!-- <router-link to="/history">History</router-link> -->
         </b-navbar-nav>
@@ -35,6 +35,7 @@
                 v-on:keydown.enter.prevent="searchProduct"
               ></b-form-input>
             </b-nav-form>
+            
             <span class="chat-notif">
               <img class="img chat" src="../../assets/ic-chat.png" />
             </span>

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Header class="wrapper" />
+    <Header class="wrapper" v-sticky />
     <b-container>
       <b-col>
         <b-card
@@ -10,17 +10,6 @@
           class="text-center"
         >
           <b-card-text>The leading innovator of Coffee Technology.</b-card-text>
-          <b-button pill class="button">
-            <router-link to="/product" class="link"
-              >Login As A Customer</router-link
-            >
-          </b-button>
-          |
-          <b-button pill class="button">
-            <router-link to="/productAdmin" class="link"
-              >Login As An Admin
-            </router-link>
-          </b-button>
         </b-card>
       </b-col>
     </b-container>
@@ -40,7 +29,7 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  position: sticky;
+  /* position: sticky; */
   z-index: 10;
   top: 0;
 }

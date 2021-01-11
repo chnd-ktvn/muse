@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <Header v-on:childToParent="onChildClick" class="wrapper" />
+    <Header v-on:childToParent="onChildClick" class="wrapper"  v-sticky />
     <b-container class="bv-example-row">
       <b-row>
         <b-col lg="4" md="12" sm="12" class="aside">
@@ -194,7 +194,7 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  position: sticky;
+  /* position: sticky; */
   z-index: 10;
   top: 0;
 }

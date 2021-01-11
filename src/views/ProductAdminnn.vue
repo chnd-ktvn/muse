@@ -1,6 +1,6 @@
 <template>
   <div class="Product">
-    <Header v-on:childToParent="onChildClick" class="wrapper" />
+    <Header v-on:childToParent="onChildClick" class="wrapper"  v-sticky />
     <b-container class="bv-example-row">
       <p>ADMIN</p>
       <b-row>
@@ -67,7 +67,7 @@ import Card from '../components/_base/Card.vue'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
-  name: 'ProductAdmin',
+  name: 'Product',
   components: {
     Header,
     Aside,
@@ -195,7 +195,7 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  position: sticky;
+  /* position: sticky; */
   z-index: 10;
   top: 0;
 }

@@ -2,7 +2,14 @@
   <b-row class="data">
     <b-col md="4" sm="12" v-for="(item, index) in products" :key="index">
       <b-card class="mb-2 card" @click="detailProduct(item.product_id)">
-        <img :src="'http://localhost:3000/' + item.photo" alt="product photo" />
+        <img
+          :src="
+            item.photo === ''
+              ? require('../../assets/latte.png')
+              : 'http://localhost:3000/' + item.photo
+          "
+          alt="product photo"
+        />
         <b-card-text class="text">
           <b>{{ item.product_name }}</b> <br />
           Rp. {{ item.product_price }}

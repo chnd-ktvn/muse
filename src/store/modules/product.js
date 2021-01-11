@@ -10,7 +10,6 @@ export default {
     page: 1,
     sort: '',
     category_id: null,
-    lolo: null,
     product: null,
     form: {
       photo: null,
@@ -18,7 +17,7 @@ export default {
       end_delivery_hour: null,
       stock_product: null
     },
-    newProduct: {},
+    // newProduct: {},
     productId: null
   },
   mutations: {
@@ -43,6 +42,7 @@ export default {
     },
     setCategory(state, payload) {
       state.category = payload
+      console.log(state.category + 'ini di category')
     },
     lala(state, payload) {
       state.lolo = payload
@@ -58,9 +58,9 @@ export default {
       state.form.end_delivery_hour = payload.end_delivery_hour
       state.form.stock_product = payload.stock_product
     },
-    settingNewProduct(state, payload) {
-      state.newProduct = payload
-    },
+    // settingNewProduct(state, payload) {
+    //   state.newProduct = payload
+    // },
     getProductId(state, payload) {
       state.productId = payload
       console.log(state.productId)
@@ -84,15 +84,34 @@ export default {
           })
       })
     },
+    getProductsAdm(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `${process.env.VUE_APP_BASE_URL}/product/all/?orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+          )
+          .then(response => {
+            console.log(response.data)
+            context.commit('setProduct', response.data)
+            resolve(response)
+          })
+          .catch(error => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    },
     getCategory(context) {
       return new Promise((resolve, reject) => {
         axios
           .get(`${process.env.VUE_APP_BASE_URL}/category/`)
           .then(response => {
             context.commit('setCategory', response.data.data)
+            console.log(response)
             resolve(response)
           })
           .catch(error => {
+            console.log(error)
             reject(error)
           })
       })
@@ -102,6 +121,23 @@ export default {
         axios
           .get(
             `${process.env.VUE_APP_BASE_URL}/product/category?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+          )
+          .then(response => {
+            console.log(response.data)
+            context.commit('setProductByCategoryId', response.data)
+            resolve(response)
+          })
+          .catch(error => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    },
+    getProductsByCategoryIdAdm(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            `${process.env.VUE_APP_BASE_URL}/product/category/adm?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
             console.log(response.data)
@@ -144,11 +180,10 @@ export default {
           .post(`${process.env.VUE_APP_BASE_URL}/product/`, payload)
           .then(response => {
             console.log(response.data)
-            context.commit('settingNewProduct', response.data)
+            // context.commit('settingNewProduct', response.data)
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
@@ -168,23 +203,16 @@ export default {
           })
       })
     },
-    // deleteProductById
-    deleteProductById(payload) {
-      // console.log(context.state.productId)
-      // {context.state.productId}
+    deleteProductById(context, payload) {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `${process.env.VUE_APP_BASE_URL}/product/deleteProduct/`,
-            payload
+            `${process.env.VUE_APP_BASE_URL}/product/deleteProduct/${payload}`
           )
           .then(response => {
-            console.log(response.data)
             resolve(response)
           })
           .catch(error => {
-            console.log(payload)
-            console.log(error)
             reject(error)
           })
       })
@@ -202,9 +230,6 @@ export default {
     },
     getStock(state) {
       return state.form.stock_product
-    },
-    getApaAja(state) {
-      return state.lolo
     },
     getPageProduct(state) {
       return state.page

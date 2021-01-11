@@ -3,10 +3,20 @@
     <b-col md="4" sm="12" v-for="(item, index) in products" :key="index">
       <b-card
         class="mb-2 card"
-        style="width: 100%;
-            height: 380px;"
+        :style="[
+          item.product_status === 0
+            ? { 'background-color': 'lightgrey' }
+            : { 'background-color': 'white' }
+        ]"
       >
-        <img :src="'http://localhost:3000/' + item.photo" alt="product photo" />
+        <img
+          :src="
+            item.photo === ''
+              ? require('../../assets/latte.png')
+              : 'http://localhost:3000/' + item.photo
+          "
+          alt="product photo"
+        />
         <b-card-text class="text">
           <b>{{ item.product_name }}</b> <br />
           Rp. {{ item.product_price }}
@@ -18,7 +28,6 @@
           class="text del"
           >Delete</b-button
         >
-        <b-button block pill class="text up">Update</b-button>
       </b-card>
     </b-col>
   </b-row>
@@ -37,8 +46,7 @@ export default {
     }
   },
   methods: {
-    // ...mapMutations(['getProductId']),
-    ...mapActions(['deleteProductById', 'getProducts']),
+    ...mapActions(['deleteProductById', 'getProductsAdm']),
     detailProduct(product_id) {
       console.log(product_id)
       this.$router.push({ name: 'productDetail', params: { id: product_id } })
@@ -55,9 +63,11 @@ export default {
       this.deleteProductById(product_id)
         .then(result => {
           this.message = result.data.msg
-          this.getProducts()
+          this.getProductsAdm()
+          console.log(result)
+          // this.getProducts()
           this.makeToast('success')
-          this.$router.push('/productAdmin')
+          this.$router.push('/product')
         })
         .catch(error => {
           this.message = error.response.data.msg

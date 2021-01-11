@@ -1,6 +1,6 @@
 <template>
   <div class="payment">
-    <Header class="wrapper" />
+    <Header class="wrapper"  v-sticky />
     <b-jumbotron class="jumbotron">
       <b-container>
         <h2>Checkout your <br />item now!</h2>
@@ -128,7 +128,7 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  position: sticky;
+  /* position: sticky; */
   z-index: 10;
   top: 0;
 }

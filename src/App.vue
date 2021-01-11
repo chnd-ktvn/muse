@@ -4,8 +4,16 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    this.interceptorRequest() // biar selalu berjalan
+    this.interceptorResponse()
+  },
+  methods: {
+    ...mapActions(['interceptorRequest', 'interceptorResponse'])
+  }
 }
 </script>
 <style scoped>

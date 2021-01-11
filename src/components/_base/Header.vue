@@ -15,10 +15,46 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="nav">
-          <router-link to="/">Home</router-link>
-          <router-link to="/product">Product</router-link>
-          <router-link to="/payment">Your Cart</router-link>
-          <router-link to="/history">History</router-link>
+          <router-link
+            v-if="
+              this.user.user_role === 1 || this.user.user_role === undefined
+            "
+            to="/"
+            >Home</router-link
+          >
+          <router-link
+            v-if="
+              this.user.user_role === 1 || this.user.user_role === undefined
+            "
+            to="/product"
+            >Product</router-link
+          >
+          <router-link
+            v-if="
+              this.user.user_role === 1 || this.user.user_role === undefined
+            "
+            to="/payment"
+            >Your Cart</router-link
+          >
+          <router-link
+            v-if="
+              this.user.user_role === 1 || this.user.user_role === undefined
+            "
+            to="/history"
+            >History</router-link
+          >
+          <router-link v-if="this.user.user_role === 2" to="/"
+            >Home</router-link
+          >
+          <router-link v-if="this.user.user_role === 2" to="/product"
+            >Product</router-link
+          >
+          <router-link v-if="this.user.user_role === 2" to="/orders"
+            >Orders</router-link
+          >
+          <router-link v-if="this.user.user_role === 2" to="/dashboard"
+            >Dashboard</router-link
+          >
         </b-navbar-nav>
 
         <div v-if="isLogin">
@@ -26,7 +62,6 @@
             <button v-on:click="isHidden = !isHidden" class="ic-search">
               <b-icon icon="search"></b-icon>
             </button>
-            <!-- @submit.prevent="searchProduct" -->
             <b-nav-form v-if="!isHidden" class="nav-form">
               <b-form-input
                 size="sm"
@@ -45,9 +80,12 @@
                 <a>
                   <img
                     class="img user-img"
-                    :src="'http://localhost:3000/' + photoUser"
+                    :src="
+                      user.photo === ''
+                        ? require('../../assets/coffee.png')
+                        : 'http://localhost:3000/' + user.photo
+                    "
                   />
-                  <!-- "../../assets/girl.png" -->
                 </a>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
@@ -97,8 +135,7 @@ export default {
   computed: {
     ...mapGetters({
       isLogin: 'isLogin',
-      photoUser: 'getPhotoUser',
-      userRole: 'getUserRole'
+      user: 'getDataUser'
     })
   },
   methods: {

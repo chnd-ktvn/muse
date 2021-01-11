@@ -4,9 +4,9 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import Profile from '../views/Profile.vue'
-import Product from '../views/Product.vue'
-import ProductAdmin from '../views/ProductAdmin.vue'
+import Product from '../views/ProductAdmin.vue'
 import CreateProduct from '../views/CreateProduct.vue'
+import CreateCoupon from '../views/CreateCoupon.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import Payment from '../views/Payment.vue'
 import History from '../views/History.vue'
@@ -39,19 +39,19 @@ const routes = [
   },
   {
     path: '/product',
-    name: 'Product',
+    name: 'product',
     component: Product
-  },
-  {
-    path: '/productAdmin',
-    name: 'productAdmin',
-    component: ProductAdmin,
-    meta: { requiresAuth: true }
   },
   {
     path: '/createProduct',
     name: 'createProduct',
     component: CreateProduct,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/createCoupon',
+    name: 'createCoupon',
+    component: CreateCoupon,
     meta: { requiresAuth: true }
   },
   {

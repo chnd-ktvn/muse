@@ -1,6 +1,6 @@
 <template>
   <div class="detail">
-    <Header class="wrapper" />
+    <Header class="wrapper"  v-sticky />
     <b-container
       class="bv-example-row"
       v-for="(item, index) in products"
@@ -269,7 +269,7 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  position: sticky;
+  /* position: sticky; */
   z-index: 10;
   top: 0;
 }

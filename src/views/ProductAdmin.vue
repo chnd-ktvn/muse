@@ -1,6 +1,6 @@
 <template>
-  <div class="productAdmin">
-    <HeaderAdmin v-on:childToParent="onChildClick" class="wrapper" />
+  <div class="product">
+    <Header v-on:childToParent="onChildClick" class="wrapper" v-sticky />
     <b-container class="bv-example-row">
       <b-row>
         <b-col lg="4" md="12" sm="12" class="aside">
@@ -40,13 +40,16 @@
                   >Posted Date</b-dropdown-item
                 >
               </b-dropdown>
-              <b-button pill>
+              <b-button pill v-if="user.user_role === 2">
                 <router-link to="/createProduct" class="link"
                   >Create Product
                 </router-link></b-button
               >
+              <Card
+                v-if="user.user_role === 1 || this.user.user_role === undefined"
+              />
               <!-- v-on:childToParentCard="onChildClickCard() -->
-              <CardButton />
+              <CardButton v-if="user.user_role === 2" />
               <b-pagination
                 v-model="currentPage"
                 :total-rows="rows"
@@ -65,17 +68,19 @@
 </template>
 
 <script>
-import HeaderAdmin from '../components/_base/HeaderAdmin.vue'
+import Header from '../components/_base/Header.vue'
 import Footer from '../components/_base/Footer.vue'
 import Aside from '../components/Aside.vue'
+import Card from '../components/_base/Card.vue'
 import CardButton from '../components/_base/CardButton.vue'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
-  name: 'ProductAdmin',
+  name: 'Product',
   components: {
-    HeaderAdmin,
+    Header,
     Aside,
+    Card,
     CardButton,
     Footer
   },
@@ -85,7 +90,8 @@ export default {
       limit: 'getLimitProduct',
       rows: 'getTotalRowsProduct',
       category: 'getDataCategory',
-      search: 'getDataSearchProduct'
+      search: 'getDataSearchProduct',
+      user: 'getDataUser'
     }),
     currentPage: {
       get() {
@@ -107,26 +113,38 @@ export default {
     }
   },
   created() {
-    this.lala(false)
-    this.handlePosted()
-    this.getCategory()
+    // this.getCategory()
+    // if (this.user.user_role || this.user.user_role === undefined) {
+      this.handlePosted()
+      this.getCategory()
+    // }
+    console.log(this.category)
   },
   methods: {
     ...mapActions([
       'getProducts',
+      'getProductsAdm',
       'getProductsByCategoryId',
+      'getProductsByCategoryIdAdm',
       'getCategory',
       'searchingProduct'
     ]),
     // 'deleteProductById'
     ...mapMutations(['changePage', 'changeSortingBy', 'changeCategory']),
     ...mapMutations(['lala']),
+
     getProductByCategory(category_id) {
       this.active = !this.active
       if (this.search === null) {
-        this.categoryId = category_id
-        this.changeCategory(category_id)
-        this.getProductsByCategoryId()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.categoryId = category_id
+          this.changeCategory(category_id)
+          this.getProductsByCategoryId()
+        } else {
+          this.categoryId = category_id
+          this.changeCategory(category_id)
+          this.getProductsByCategoryIdAdm()
+        }
       } else {
         this.categoryId = category_id
         this.changeCategory(category_id)
@@ -135,11 +153,21 @@ export default {
     },
     handleName() {
       if (this.search === null && this.categoryId === null) {
-        this.changeSortingBy(this.sortName)
-        this.getProducts()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changeSortingBy(this.sortName)
+          this.getProducts()
+        } else {
+          this.changeSortingBy(this.sortName)
+          this.getProductsAdm()
+        }
       } else if (this.search === null && this.categoryId !== null) {
-        this.changeSortingBy(this.sortName)
-        this.getProductsByCategoryId()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changeSortingBy(this.sortName)
+          this.getProductsByCategoryId()
+        } else {
+          this.changeSortingBy(this.sortName)
+          this.getProductsByCategoryIdAdm()
+        }
       } else if (this.search !== null && this.categoryId === null) {
         this.changeSortingBy(this.sortName)
         this.searchingProduct()
@@ -150,11 +178,21 @@ export default {
     },
     handlePrice() {
       if (this.search === null && this.categoryId === null) {
-        this.changeSortingBy(this.sortPrice)
-        this.getProducts()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changeSortingBy(this.sortPrice)
+          this.getProducts()
+        } else {
+          this.changeSortingBy(this.sortPrice)
+          this.getProductsAdm()
+        }
       } else if (this.search === null && this.categoryId !== null) {
-        this.changeSortingBy(this.sortPrice)
-        this.getProductsByCategoryId()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changeSortingBy(this.sortPrice)
+          this.getProductsByCategoryId()
+        } else {
+          this.changeSortingBy(this.sortPrice)
+          this.getProductsByCategoryIdAdm()
+        }
       } else if (this.search !== null && this.categoryId === null) {
         this.changeSortingBy(this.sortPrice)
         this.searchingProduct()
@@ -163,13 +201,23 @@ export default {
         this.searchingProduct()
       }
     },
-    handlePosted() { 
+    handlePosted() {
       if (this.search === null && this.categoryId === null) {
-        this.changeSortingBy(this.sortPosted)
-        this.getProducts()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changeSortingBy(this.sortPosted)
+          this.getProducts()
+        } else {
+          this.changeSortingBy(this.sortPosted)
+          this.getProductsAdm()
+        }
       } else if (this.search === null && this.categoryId !== null) {
-        this.changeSortingBy(this.sortPosted)
-        this.getProductsByCategoryId()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changeSortingBy(this.sortPosted)
+          this.getProductsByCategoryId()
+        } else {
+          this.changeSortingBy(this.sortPosted)
+          this.getProductsByCategoryIdAdm()
+        }
       } else if (this.search !== null && this.categoryId === null) {
         this.changeSortingBy(this.sortPosted)
         this.searchingProduct()
@@ -183,11 +231,21 @@ export default {
     },
     handlePageChange(numberPage) {
       if (this.search === null && this.categoryId === null) {
-        this.changePage(numberPage)
-        this.getProducts()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changePage(numberPage)
+          this.getProducts()
+        } else {
+          this.changePage(numberPage)
+          this.getProductsAdm()
+        }
       } else if (this.search === null && this.categoryId !== null) {
-        this.changePage(numberPage)
-        this.getProductsByCategoryId()
+        if (this.user.user_role === 1 || this.user.user_role === undefined) {
+          this.changePage(numberPage)
+          this.getProductsByCategoryId()
+        } else {
+          this.changePage(numberPage)
+          this.getProductsByCategoryIdAdm()
+        }
       } else if (this.search !== null && this.categoryId === null) {
         this.changePage(numberPage)
         this.searchingProduct()
@@ -205,7 +263,7 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  position: sticky;
+  /* position: sticky; */
   z-index: 10;
   top: 0;
 }

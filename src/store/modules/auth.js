@@ -8,26 +8,20 @@ export default {
     user: {},
     userWIthId: [],
     newUser: {},
-    // userId: null,
-    vuexDataUser: localStorage.getItem('vuex'),
+    // vuexDataUser: localStorage.getItem('vuex'),
     token: localStorage.getItem('token') || null
   },
   mutations: {
-    // state itu manggil state payload itu data yang mau dibawa
     setUser(state, payload) {
-      state.user = payload // ngisi data user
+      state.user = payload
       state.token = payload.token
-      // state.photoUser = payload.photo
-      // state.userId = payload.user_id
-      // console.log(state.userId)
-      // ngisi token di obj user dengan data token yang ada di payload
     },
     setNewUser(state, payload) {
       state.newUser = payload
     },
     setUserWithId(state, payload) {
       state.userWIthId = payload
-      console.log(state.userWIthId + 'di mutasi set user with id')
+      console.log(state.userWIthId)
     },
     setPhotoUser(state, payload) {
       state.photoUser = payload
@@ -39,7 +33,6 @@ export default {
     }
   },
   actions: {
-    // context itu manggil mutasi dan payload itu datanya
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
@@ -79,9 +72,7 @@ export default {
           .then(result => {
             console.log(result.data.data)
             console.log(result.data.data[0].photo)
-            // context.state.photo = result.data.data.photo/
             context.commit('setPhotoUser', result.data.data[0].photo)
-            // context.commit('setPhotoUser', result.data.data.user_photo)
             context.commit('setUserWithId', result.data.data)
             resolve(result)
           })
@@ -116,8 +107,7 @@ export default {
               error.response.msg === 'jwt expired')
           ) {
             context.dispatch('logout')
-            // debugging doang
-            alert(error.response.data.msg)
+            // alert(error.response.data.msg)
           }
           return Promise.reject(error)
         }
@@ -131,11 +121,8 @@ export default {
     getDataUserById(state) {
       return state.userWIthId
     },
-    getPhotoUser(state) {
-      return JSON.parse(state.vuexDataUser).Auth.user.photo
-    },
-    getUserRole(state){
-      return JSON.parse(state.vuexDataUser).Auth.user.user_role
+    getDataUser(state){
+      return state.user
     }
   }
 }

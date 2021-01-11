@@ -112,7 +112,8 @@ export default {
       photo: 'getPhoto',
       start_delivery_hour: 'getStartDel',
       end_delivery_hour: 'getEndDel',
-      stock_product: 'getStock'
+      stock_product: 'getStock',
+      products: 'getDataProduct'
     })
   },
   data() {
@@ -150,7 +151,16 @@ export default {
       ]
     }
   },
+  // computed: {
+  //   ...mapGetters({
+  //     products: 'getDataProduct'
+  //   })
+  // },
   methods: {
+    // get() {
+    //   const lolo = []
+      
+    // },
     ...mapActions(['setNewProduct', 'getProducts']),
     handleCategory(e) {
       console.log(e)

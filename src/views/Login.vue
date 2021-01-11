@@ -4,6 +4,7 @@
       <b-col lg="5" md="5" sm="12" class="img-part">
         <img src="../assets/robert-bye.png" alt="Photo" class="img" />
       </b-col>
+
       <b-col lg="7" md="7" sm="12" class="input-part">
         <b-container>
           <b-row style="margin: 20px 0;">
@@ -76,6 +77,11 @@
                     >Sign up here
                   </router-link></b-button
                 >
+                <b-button block style="border-radius: 15px;"
+                  ><router-link to="/" class="link"
+                    >Cancel
+                  </router-link></b-button
+                >
               </b-form>
             </b-container>
           </b-row>
@@ -87,7 +93,7 @@
 </template>
 <script>
 import FooterP from '../components/_base/FooterP.vue'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   components: {
@@ -102,9 +108,6 @@ export default {
       msg: ''
     }
   },
-  computed: {
-    ...mapGetters(['getUserRole'])
-  },
   methods: {
     makeToast(variant = null) {
       this.$bvToast.toast(`${this.msg}`, {
@@ -113,16 +116,14 @@ export default {
         solid: true
       })
     },
-    ...mapActions(['login', 'getUserById']),
+    ...mapActions(['login']),
     onSubmit() {
       this.login(this.form)
         .then(result => {
-          this.getUserById()
           this.msg = result.data.msg
           this.makeToast('success')
-          if (this.getUserRole === 2) {
-            this.$router.push('/productAdmin')
-          } else {
+          console.log(result)
+          if (result.data.data.user_role) {
             this.$router.push('/product')
           }
         })
