@@ -20,7 +20,7 @@
               :src="
                 item.photo === ''
                   ? require('./../assets/latte.png')
-                  : 'http://localhost:3000/' + item.photo
+                  : `http://${env}/fileuploads/product_photo/` + item.photo
               "
               alt="Coffee"
             />
@@ -170,6 +170,7 @@ export default {
   },
   data() {
     return {
+      env: process.env.VUE_APP_URL,
       product_id: '',
       fromChild: '',
       // products: [],

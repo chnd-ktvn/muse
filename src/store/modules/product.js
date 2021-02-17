@@ -83,7 +83,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `${process.env.VUE_APP_BASE_URL}/product?orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+            `http://${process.env.VUE_APP_BASE_URL}/product?orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
             context.commit('setProduct', response.data)
@@ -98,7 +98,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `${process.env.VUE_APP_BASE_URL}/product/all/?orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+            `http://${process.env.VUE_APP_BASE_URL}/product/all/?orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
             context.commit('setProduct', response.data)
@@ -112,7 +112,7 @@ export default {
     getCategory(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${process.env.VUE_APP_BASE_URL}/category/`)
+          .get(`http://${process.env.VUE_APP_BASE_URL}/category/`)
           .then(response => {
             context.commit('setCategory', response.data.data)
             resolve(response)
@@ -126,7 +126,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `${process.env.VUE_APP_BASE_URL}/product/category?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+            `http://${process.env.VUE_APP_BASE_URL}/product/category?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
             context.commit('setProductByCategoryId', response.data.data[0])
@@ -141,7 +141,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `${process.env.VUE_APP_BASE_URL}/product/category/adm?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+            `http://${process.env.VUE_APP_BASE_URL}/product/category/adm?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
             context.commit('setProductByCategoryId', response.data)
@@ -163,7 +163,7 @@ export default {
         // categoryId=${context.state.category_id}
         axios
           .get(
-            `${process.env.VUE_APP_BASE_URL}/product/searchByName/?name=${context.state.product}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+            `http://${process.env.VUE_APP_BASE_URL}/product/searchByName/?name=${context.state.product}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
             context.commit('setProduct', response.data)
@@ -177,7 +177,7 @@ export default {
     setNewProduct(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`${process.env.VUE_APP_BASE_URL}/product/`, payload)
+          .post(`http://${process.env.VUE_APP_BASE_URL}/product/`, payload)
           .then(response => {
             // context.commit('settingNewProduct', response.data)
             resolve(response)
@@ -192,7 +192,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `${process.env.VUE_APP_BASE_URL}/product/${payload.id}`,
+            `http://${process.env.VUE_APP_BASE_URL}/product/${payload.id}`,
             payload.data
           )
           .then(response => {
@@ -206,7 +206,7 @@ export default {
     getProductById(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${process.env.VUE_APP_BASE_URL}/product/${payload}`)
+          .get(`http://${process.env.VUE_APP_BASE_URL}/product/${payload}`)
           .then(response => {
             context.commit('getProductId', response.data)
             resolve(response)
@@ -219,7 +219,7 @@ export default {
     getProductByIdAdm(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${process.env.VUE_APP_BASE_URL}/product/adm/${payload}`)
+          .get(`http://${process.env.VUE_APP_BASE_URL}/product/adm/${payload}`)
           .then(response => {
             context.commit('getProductIdAdm', response.data)
             resolve(response)
@@ -233,7 +233,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `${process.env.VUE_APP_BASE_URL}/product/deleteProduct/${payload}`
+            `http://${process.env.VUE_APP_BASE_URL}/product/deleteProduct/${payload}`
           )
           .then(response => {
             resolve(response)

@@ -83,10 +83,9 @@
                     :src="
                       user.photo === ''
                         ? require('../../assets/coffee.png')
-                        : 'http://localhost:3000/' + user.photo
+                        : `http://${env}/fileuploads/user_photo/` + user.photo
                     "
                   />
-                  
                 </a>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
@@ -129,6 +128,7 @@ export default {
   name: 'Header',
   data() {
     return {
+      env: process.env.VUE_APP_URL,
       product: '',
       isHidden: true
     }

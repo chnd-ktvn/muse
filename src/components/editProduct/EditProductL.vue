@@ -5,7 +5,12 @@
         <!-- <p>{{ productByIdAdm }}</p> -->
         <b-img
           v-if="img || productByIdAdm.photo"
-          :src="img ? img : 'http://localhost:3000/' + productByIdAdm.photo"
+          :src="
+            img
+              ? img
+              : `http://${env}/fileuploads/product_photo/` +
+                productByIdAdm.photo
+          "
           class="img"
         ></b-img>
         <b-img
@@ -54,6 +59,7 @@ export default {
   name: 'LeftPart',
   data() {
     return {
+      env: process.env.VUE_APP_URL,
       message: '',
       imgDefault: 'photo-camera-black-tool4.png',
       img: null,

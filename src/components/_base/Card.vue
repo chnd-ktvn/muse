@@ -6,7 +6,7 @@
           :src="
             item.photo === ''
               ? require('../../assets/latte.png')
-              : 'http://localhost:3000/' + item.photo
+              : `http://${env}/fileuploads/product_photo/` + item.photo
           "
           alt="product photo"
         />
@@ -21,6 +21,11 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
+  data() {
+    return {
+      env: process.env.VUE_APP_URL
+    }
+  },
   computed: {
     ...mapGetters({
       products: 'getDataProduct'

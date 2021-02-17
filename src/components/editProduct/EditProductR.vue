@@ -2,7 +2,6 @@
   <b-container>
     <form>
       <b-form-group id="input-group-1" label="Name:" label-for="input-name">
-        <p>{{ productByIdAdm }}</p>
         <b-form-input
           id="input-name"
           v-model="productByIdAdm.product_name"

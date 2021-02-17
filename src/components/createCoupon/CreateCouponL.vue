@@ -7,7 +7,7 @@
           :src="
             img === ''
               ? require('../../assets/coffee.png')
-              : 'http://localhost:3000/' + img
+              : `http://${env}/fileuploads/product_photo/` + img
           "
           class="img"
         ></b-img>
@@ -63,6 +63,7 @@ export default {
   },
   data() {
     return {
+      env: process.env.VUE_APP_URL,
       message: '',
       imgDefault: 'photo-camera-black-tool4.png',
       // img: null,
