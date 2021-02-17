@@ -2,7 +2,12 @@
   <b-container>
     <form>
       <b-col class="preview">
-        <b-img v-if="img" :src="img" class="img"></b-img>
+        <!-- <p>{{ productByIdAdm }}</p> -->
+        <b-img
+          v-if="img || productByIdAdm.photo"
+          :src="img ? img : 'http://localhost:3000/' + productByIdAdm.photo"
+          class="img"
+        ></b-img>
         <b-img
           v-else
           :src="require('../../assets/' + imgDefault)"
@@ -20,13 +25,13 @@
         label="Delivery Hour:"
       >
         <b-form-select
-          v-model="form.start_delivery_hour"
+          v-model="productByIdAdm.start_delivery_hour"
           @change="handleDel"
           :options="startHours"
           required
         ></b-form-select>
         <b-form-select
-          v-model="form.end_delivery_hour"
+          v-model="productByIdAdm.end_delivery_hour"
           @change="handleDel"
           :options="endHours"
           required
@@ -34,7 +39,7 @@
       </b-form-group>
       <b-form-group id="input-group-7" label="Input Stock:">
         <b-form-select
-          v-model="form.stock_product"
+          v-model="productByIdAdm.stock_product"
           @change="handleDel"
           :options="stock"
           required
@@ -44,7 +49,7 @@
   </b-container>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 export default {
   name: 'LeftPart',
   data() {
@@ -86,6 +91,11 @@ export default {
       show: false
     }
   },
+  computed: {
+    ...mapGetters({
+      productByIdAdm: 'getProductAdm'
+    })
+  },
   methods: {
     ...mapMutations(['setForm']),
     handleFile(e) {
@@ -100,7 +110,8 @@ export default {
         this.img = null
         this.makeToast('danger')
       } else {
-        this.form.photo = e.target.files[0]
+        this.productByIdAdm.photo = e.target.files[0]
+        console.log(this.productByIdAdm.photo)
         this.setForm(this.form)
       }
     },
@@ -114,19 +125,6 @@ export default {
     handleDel(e) {
       console.log(e)
       this.setForm(this.form)
-    },
-    onSelect() {
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']
-      const file = this.$refs.file.files[0]
-      this.url = URL.createObjectURL(file)
-      this.file = file
-      if (!allowedTypes.includes(file.type)) {
-        this.message = 'Filetype is wrong!!'
-      }
-      if (file.size > 2 * 1024 * 1024) {
-        this.message = 'Too large, max size allowed is 500kb'
-        this.url = null
-      }
     }
   }
 }

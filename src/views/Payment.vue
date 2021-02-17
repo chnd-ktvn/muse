@@ -1,6 +1,6 @@
 <template>
   <div class="payment">
-    <Header class="wrapper"  v-sticky />
+    <Header class="wrapper" v-sticky />
     <b-jumbotron class="jumbotron">
       <b-container>
         <h2>Checkout your <br />item now!</h2>

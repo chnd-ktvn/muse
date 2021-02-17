@@ -12,8 +12,6 @@ export default {
     setCoupon(state, payload) {
       state.showCoupon = true
       state.coupons = payload
-      // state.showCoupon = true
-      console.log(state.coupons)
     }
   },
   actions: {

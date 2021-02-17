@@ -67,8 +67,8 @@ h1 {
 }
 .brand {
   display: flex;
-  justify-content: start;
-  align-content: start;
+  justify-content: flex-start;
+  align-content: flex-start;
 }
 p.des {
   text-align: center;

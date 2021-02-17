@@ -1,8 +1,6 @@
 <template>
   <div>
     <b-row class="footer">
-      <!-- <b-container> -->
-      <!-- <b-row> -->
       <b-col sm="6" md="6" lg="6" class="footer-des">
         <b-row class="brand">
           <b-container>
@@ -43,8 +41,6 @@
           </b-col>
         </b-row>
       </b-col>
-      <!-- </b-row> -->
-      <!-- </b-container> -->
     </b-row>
   </div>
 </template>
@@ -57,7 +53,7 @@ export default {
 .footer {
   background-color: rosybrown;
   font-family: cursive;
-  padding: 20px 0;
+  padding: 50px 0;
   text-align: center;
   font-size: 18px;
 }
@@ -69,8 +65,8 @@ h1 {
 }
 .brand {
   display: flex;
-  justify-content: start;
-  align-content: start;
+  justify-content: flex-start;
+  align-content: flex-start;
 }
 p.des {
   text-align: center;
@@ -154,5 +150,10 @@ a:hover {
 }
 .footer-engage {
   flex: 6;
+}
+@media screen and (max-width: 768px) {
+  .footer {
+    padding: 20px;
+  }
 }
 </style>

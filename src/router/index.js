@@ -2,10 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-import SignUp from '../views/SignUp.vue'
+import ActivateAccount from '../views/ActivateAccount.vue'
 import Profile from '../views/Profile.vue'
 import Product from '../views/ProductAdmin.vue'
 import CreateProduct from '../views/CreateProduct.vue'
+import EditProduct from '../views/EditProduct.vue'
 import CreateCoupon from '../views/CreateCoupon.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import Payment from '../views/Payment.vue'
@@ -27,9 +28,9 @@ const routes = [
     meta: { requiresVisitor: true }
   },
   {
-    path: '/signup',
-    name: 'SignUp',
-    component: SignUp
+    path: '/activate/:id',
+    name: 'ActivateAccount',
+    component: ActivateAccount
   },
   {
     path: '/profile',
@@ -49,6 +50,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/editProduct/:id',
+    name: 'editProduct',
+    component: EditProduct,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/createCoupon',
     name: 'createCoupon',
     component: CreateCoupon,
@@ -57,8 +64,7 @@ const routes = [
   {
     path: '/productDetail/:id',
     name: 'productDetail',
-    component: ProductDetail,
-    meta: { requiresAuth: true }
+    component: ProductDetail
   },
   {
     path: '/payment',
@@ -88,7 +94,8 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else if (to.matched.some(record => record.meta.requiresVisitor)) {
-    if (store.getters.isLogin) { // ini yang
+    if (store.getters.isLogin) {
+      // ini yang
       next({
         path: '/'
       })

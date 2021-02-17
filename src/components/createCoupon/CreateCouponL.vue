@@ -2,8 +2,17 @@
   <b-container>
     <form>
       <b-col class="preview">
-        <b-img v-if="img" :src="img" class="img"></b-img>
         <b-img
+          v-if="img"
+          :src="
+            img === ''
+              ? require('../../assets/coffee.png')
+              : 'http://localhost:3000/' + img
+          "
+          class="img"
+        ></b-img>
+        <b-img
+        
           v-else
           :src="require('../../assets/' + imgDefault)"
           alt="Not rounded image"
@@ -12,7 +21,7 @@
       <b-button class="btn-take" block>Take a picture</b-button>
       <label class="btn-handle"
         >Choose from gallery
-        <input type="file" @change="handleFile" v-show="show" />
+        <input type="file" v-show="show" />
       </label>
       <b-form-group
         style="margin-top: 25px;"
@@ -41,25 +50,22 @@
         ></b-form-select>
       </b-form-group>
     </form>
-    <!-- <div class="fields">
-      <label>Upload File</label><br />
-      <video autoplay="true" id="videoElement" ref="video"></video>
-      <button @click="onS">Camera neh</button>
-      <button @click="capture">Capture</button>
-      <button @click="stop">Stop eh</button>
-    </div> -->
-    <!-- </form> -->
   </b-container>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'LeftPart',
+  computed: {
+    ...mapGetters({
+      img: 'getDataphotoProduct'
+    })
+  },
   data() {
     return {
       message: '',
       imgDefault: 'photo-camera-black-tool4.png',
-      img: null,
+      // img: null,
       form: {
         photo: null,
         start_delivery_hour: null,
@@ -96,40 +102,7 @@ export default {
     }
   },
   methods: {
-    onS() {
-      // if (navigator.mediaDevices.getUserMedia) {
-      //   navigator.mediaDevices
-      //     .getUserMedia({ video: true })
-      //     .then(function(stream) {
-      //       video.srcObject = stream
-      //     })
-      //     .catch(function(err0r) {
-      //       console.log('Something went wrong!')
-      //     })
-      // }
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then(mediaStream => {
-          this.mediaStream = mediaStream
-          this.$refs.video.srcObject = mediaStream
-          this.$refs.video.play()
-        })
-        .catch(error => console.error('getUserMedia() error:', error))
-    },
-    capture() {
-      console.log(this.mediaStream)
-      const mediaStreamTrack = this.mediaStream.getVideoTracks()[0]
-      const imageCapture = new window.ImageCapture(mediaStreamTrack)
-      // const tracks = this.mediaStream.getTracks()
-      // tracks.map(track => track.stop())
-      return imageCapture.takePhoto().then(blob => {
-        console.log(blob)
-      })
-    },
-    stop() {
-      const tracks = this.mediaStream.getTracks()
-      tracks.map(track => track.stop())
-    },
+    // ...mapActions(['getProductById']),
     ...mapMutations(['setForm']),
     handleFile(e) {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']
@@ -145,7 +118,6 @@ export default {
       } else {
         this.form.photo = e.target.files[0]
         this.setForm(this.form)
-        console.log(this.form)
       }
     },
     makeToast(variant = null) {
@@ -158,22 +130,18 @@ export default {
     handleDel(e) {
       console.log(e)
       this.setForm(this.form)
-      console.log(this.form)
     },
     onSelect() {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']
       const file = this.$refs.file.files[0]
       this.url = URL.createObjectURL(file)
       this.file = file
-      console.log(this.file.name)
       if (!allowedTypes.includes(file.type)) {
         this.message = 'Filetype is wrong!!'
-        console.log(file.type)
       }
       if (file.size > 2 * 1024 * 1024) {
         this.message = 'Too large, max size allowed is 500kb'
         this.url = null
-        console.log(file.size)
       }
     }
   }

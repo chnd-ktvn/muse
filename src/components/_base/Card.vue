@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     detailProduct(product_id) {
-      console.log(product_id)
       this.$router.push({ name: 'productDetail', params: { id: product_id } })
     }
   }

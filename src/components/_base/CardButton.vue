@@ -28,6 +28,13 @@
           class="text del"
           >Delete</b-button
         >
+        <b-button
+          @click="editProduct(item.product_id)"
+          pill
+          block
+          class="text del"
+          >Update</b-button
+        >
       </b-card>
     </b-col>
   </b-row>
@@ -48,7 +55,6 @@ export default {
   methods: {
     ...mapActions(['deleteProductById', 'getProductsAdm']),
     detailProduct(product_id) {
-      console.log(product_id)
       this.$router.push({ name: 'productDetail', params: { id: product_id } })
     },
     makeToast(variant = null) {
@@ -59,12 +65,10 @@ export default {
       })
     },
     deleteProduct(product_id) {
-      console.log(product_id)
       this.deleteProductById(product_id)
         .then(result => {
           this.message = result.data.msg
           this.getProductsAdm()
-          console.log(result)
           // this.getProducts()
           this.makeToast('success')
           this.$router.push('/product')
@@ -76,6 +80,9 @@ export default {
       // console.log(product_id)
       // this.getProductId(product_id)
       // this.$emit('childToParentCard', product_id)
+    },
+    editProduct(e) {
+      this.$router.push({ name: 'editProduct', params: { id: e } })
     }
   }
 }

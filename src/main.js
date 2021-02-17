@@ -6,9 +6,11 @@ import store from './store'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VueSweetAlert2 from 'vue-sweetalert2'
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueSweetAlert2)
 Vue.config.productionTip = false
 
 Vue.directive('sticky', function(el) {

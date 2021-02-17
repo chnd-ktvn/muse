@@ -1,9 +1,9 @@
 <template>
   <div class="detail">
-    <Header class="wrapper"  v-sticky />
+    <Header class="wrapper" v-sticky />
     <b-container
       class="bv-example-row"
-      v-for="(item, index) in products"
+      v-for="(item, index) in product"
       :key="index"
     >
       <div class="router">
@@ -14,13 +14,21 @@
         }}</router-link>
       </div>
       <b-row>
-        <b-col lg="4" md="4" sm="12" bg-variant="info" class="a">
+        <b-col lg="4" md="4" sm="12">
           <b-container>
-            <img src="./../assets/image 25.png" alt="Coffee" />
+            <img
+              :src="
+                item.photo === ''
+                  ? require('./../assets/latte.png')
+                  : 'http://localhost:3000/' + item.photo
+              "
+              alt="Coffee"
+            />
             <b-row class="delivery">
               <b-container>
                 <p class="p del">Delivery and Time</p>
                 <b-row>
+                  <p>{{ item.delivery_methods }}</p>
                   <b-col lg="4" md="12" sm="12"
                     ><b-button class="button" @click="handle('Dine In')"
                       >Dine In</b-button
@@ -150,9 +158,10 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import Header from '../components/_base/Header.vue'
 import Footer from '../components/_base/Footer.vue'
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   name: 'productDetail',
   components: {
@@ -163,9 +172,10 @@ export default {
     return {
       product_id: '',
       fromChild: '',
-      products: [],
+      // products: [],
       qty: 1,
       delivery: '',
+      delivery_method: this.deliveryM.split(','),
       product_size: {},
       setNow: '',
       setTime: '',
@@ -181,25 +191,41 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      product: 'getDataProductId',
+      deliveryM: 'getDatadeliveryMethods'
+    }),
     btnStates() {
       return this.size.map(sz => sz.state)
     }
   },
   created() {
     this.product_id = this.$route.params.id
-    console.log(this.$route.params.id)
     this.getProductById(this.product_id)
+    this.setDelivery()
+    // console.log(JSON.parse(this.delivery_method))
   },
   methods: {
-    getProductById(id) {
-      axios.get(`http://localhost:1010/product/${id}`).then(response => {
-        console.log(response)
-        this.products = response.data.data
-        this.product_name = response.data.data[0].product_name
-        this.product_kind = response.data.data[0].product_kind
-        this.size = JSON.parse(response.data.data[0].product_size)
-      })
+    ...mapActions(['getProductById']),
+    setDelivery() {
+      // this.deliveryM.forEach(el => {
+      //   this.delivery_method.push(el.toString())
+      // })
+      // console.log(this.delivery_method)
+      // console.log(this.deliveryM.split(','))
+      // this.deliveryM.split(',')
+      // this.delivery_method = this.deliveryM.toString().split(',')
+      // c = JSON.parse(this.deliveryM.toString().split(','))
     },
+    // getProductById(id) {
+    //   axios.get(`http://localhost:3000/product/${id}`).then(response => {
+    //     console.log(response)
+    //     this.products = response.data.data
+    //     this.product_name = response.data.data[0].product_name
+    //     this.product_kind = response.data.data[0].product_kind
+    //     this.size = JSON.parse(response.data.data[0].product_size)
+    //   })
+    // },
     decrement() {
       this.qty -= 1
     },
@@ -208,15 +234,12 @@ export default {
     },
     handle(value) {
       this.delivery = value
-      console.log(this.delivery)
     },
     handleSet(value) {
       this.setNow = value
-      console.log(this.setNow)
     },
     handleSetTime(value) {
       this.setTime = value
-      console.log(this.setTime)
     },
     handleClick(sz) {
       if (sz === 'R') {
@@ -250,7 +273,6 @@ export default {
       // } else if (this.data500gr[0]) {
       //   this.product_size.push(this.data500gr[0])
       // }
-      console.log(this.product_size)
       let sumif =
         this.dataR.length +
         this.dataL.length +
@@ -269,7 +291,6 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  /* position: sticky; */
   z-index: 10;
   top: 0;
 }
@@ -288,17 +309,19 @@ export default {
   color: black;
   font-weight: normal;
 }
-.linkk{
+.linkk {
   color: white;
   text-decoration: none;
 }
-.linkkk{
+.linkkk {
   color: black;
 }
 img {
-  width: 100%;
   border-radius: 50%;
-  padding: 0 20%;
+  margin: 0 30px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
 }
 p {
   text-align: left;

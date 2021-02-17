@@ -31,13 +31,13 @@
                 class="m-2"
               >
                 <b-dropdown-item style="font-size: 18px" @click="handleName"
-                  >Name</b-dropdown-item
+                  >A - Z</b-dropdown-item
                 >
                 <b-dropdown-item style="font-size: 18px" @click="handlePrice"
-                  >Price</b-dropdown-item
+                  >Lowest to Highest</b-dropdown-item
                 >
                 <b-dropdown-item style="font-size: 18px" @click="handlePosted"
-                  >Posted Date</b-dropdown-item
+                  >Oldest to Newest</b-dropdown-item
                 >
               </b-dropdown>
               <b-button pill v-if="user.user_role === 2">
@@ -46,9 +46,8 @@
                 </router-link></b-button
               >
               <Card
-                v-if="user.user_role === 1 || this.user.user_role === undefined"
+                v-if="user.user_role === 1 || user.user_role === undefined"
               />
-              <!-- v-on:childToParentCard="onChildClickCard() -->
               <CardButton v-if="user.user_role === 2" />
               <b-pagination
                 v-model="currentPage"
@@ -113,12 +112,8 @@ export default {
     }
   },
   created() {
-    // this.getCategory()
-    // if (this.user.user_role || this.user.user_role === undefined) {
-      this.handlePosted()
-      this.getCategory()
-    // }
-    console.log(this.category)
+    this.handlePosted()
+    this.getCategory()
   },
   methods: {
     ...mapActions([
@@ -254,10 +249,6 @@ export default {
         this.searchingProduct()
       }
     }
-    // onChildClickCard(product_id) {
-    //   this.deleteProductById(product_id)
-    //   this.getProducts()
-    // }
   }
 }
 </script>

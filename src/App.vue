@@ -8,7 +8,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'App',
   created() {
-    this.interceptorRequest() // biar selalu berjalan
+    this.interceptorRequest()
     this.interceptorResponse()
   },
   methods: {

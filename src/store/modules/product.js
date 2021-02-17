@@ -6,7 +6,7 @@ export default {
     products: [],
     category: [],
     totalRows: null,
-    limit: 6,
+    limit: 4,
     page: 1,
     sort: '',
     category_id: null,
@@ -18,7 +18,13 @@ export default {
       stock_product: null
     },
     // newProduct: {},
-    productId: null
+    productId: [],
+    deliveryMethods: null,
+    nameProduct: '',
+    priceProduct: null,
+    photoProduct: '',
+    sizeProduct: null,
+    productById: {}
   },
   mutations: {
     setProduct(state, payload) {
@@ -42,7 +48,6 @@ export default {
     },
     setCategory(state, payload) {
       state.category = payload
-      console.log(state.category + 'ini di category')
     },
     lala(state, payload) {
       state.lolo = payload
@@ -62,8 +67,15 @@ export default {
     //   state.newProduct = payload
     // },
     getProductId(state, payload) {
-      state.productId = payload
-      console.log(state.productId)
+      state.productId = payload.data
+      state.deliveryMethods = payload.data[0].delivery_methods.split(',')
+      state.sizeProduct = payload.data[0].product_size.split(',')
+      state.nameProduct = payload.data[0].product_name
+      state.priceProduct = payload.data[0].product_price
+      state.photoProduct = payload.data[0].photo
+    },
+    getProductIdAdm(state, payload) {
+      state.productById = payload.data[0]
     }
   },
   actions: {
@@ -74,12 +86,10 @@ export default {
             `${process.env.VUE_APP_BASE_URL}/product?orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
-            console.log(response.data)
             context.commit('setProduct', response.data)
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
@@ -91,12 +101,10 @@ export default {
             `${process.env.VUE_APP_BASE_URL}/product/all/?orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
-            console.log(response.data)
             context.commit('setProduct', response.data)
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
@@ -107,11 +115,9 @@ export default {
           .get(`${process.env.VUE_APP_BASE_URL}/category/`)
           .then(response => {
             context.commit('setCategory', response.data.data)
-            console.log(response)
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
@@ -123,12 +129,10 @@ export default {
             `${process.env.VUE_APP_BASE_URL}/product/category?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
-            console.log(response.data)
-            context.commit('setProductByCategoryId', response.data)
+            context.commit('setProductByCategoryId', response.data.data[0])
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
@@ -140,36 +144,32 @@ export default {
             `${process.env.VUE_APP_BASE_URL}/product/category/adm?categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
-            console.log(response.data)
             context.commit('setProductByCategoryId', response.data)
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
     },
     searchingProduct(context) {
-      console.log(context.state.category_id)
       if (context.state.category_id === null) {
         context.state.page = 1
-        context.state.category_id = 1
+        // context.state.category_id = 1
       } else {
         context.state.page = 1
       }
       return new Promise((resolve, reject) => {
+        // categoryId=${context.state.category_id}
         axios
           .get(
-            `${process.env.VUE_APP_BASE_URL}/product/searchByName/?name=${context.state.product}&categoryId=${context.state.category_id}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
+            `${process.env.VUE_APP_BASE_URL}/product/searchByName/?name=${context.state.product}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
-            console.log(response.data)
             context.commit('setProduct', response.data)
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error)
           })
       })
@@ -179,8 +179,23 @@ export default {
         axios
           .post(`${process.env.VUE_APP_BASE_URL}/product/`, payload)
           .then(response => {
-            console.log(response.data)
             // context.commit('settingNewProduct', response.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    editProductById(context, payload) {
+      console.log(payload)
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(
+            `${process.env.VUE_APP_BASE_URL}/product/${payload.id}`,
+            payload.data
+          )
+          .then(response => {
             resolve(response)
           })
           .catch(error => {
@@ -191,14 +206,25 @@ export default {
     getProductById(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${process.env.VUE_APP_BASE_URL}/product/`, payload)
+          .get(`${process.env.VUE_APP_BASE_URL}/product/${payload}`)
           .then(response => {
-            console.log(response.data)
             context.commit('getProductId', response.data)
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
+            reject(error)
+          })
+      })
+    },
+    getProductByIdAdm(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`${process.env.VUE_APP_BASE_URL}/product/adm/${payload}`)
+          .then(response => {
+            context.commit('getProductIdAdm', response.data)
+            resolve(response)
+          })
+          .catch(error => {
             reject(error)
           })
       })
@@ -251,6 +277,28 @@ export default {
     },
     getDataSearchProduct(state) {
       return state.product
+    },
+    getDataProductId(state) {
+      return state.productId
+    },
+    getDatadeliveryMethods(state) {
+      return state.deliveryMethods
+    },
+    getDatanameProduct(state) {
+      return state.nameProduct
+    },
+    getDatapriceProduct(state) {
+      return state.priceProduct
+    },
+    getDataphotoProduct(state) {
+      return state.photoProduct
+    },
+    getsizeProduct(state) {
+      return state.sizeProduct
+    },
+    // productById
+    getProductAdm(state) {
+      return state.productById
     }
   }
 }

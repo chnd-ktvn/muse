@@ -1,23 +1,32 @@
 <template>
   <b-container>
     <form>
-      <b-form-group id="input-group-1" label="Name:" label-for="input-name">
+      <b-form-group id="input-group-1" label="ID Product:" label-for="input-id">
+        <b-form-input
+          id="input-id"
+          v-model="form.product_id"
+          type="number"
+          placeholder="Hit enter to search Product ID"
+          v-on:keydown.enter.prevent="searchID(form.product_id)"
+          required
+        ></b-form-input>
+      </b-form-group>
+      <b-form-group id="input-group-2" label="Name:" label-for="input-name">
         <b-form-input
           id="input-name"
           v-model="form.product_name"
           type="text"
-          :state="form.product_name.length >= 10"
-          placeholder="Type product name min. 10 characters"
-          required
+          :placeholder="name ? name : 'Product Name'"
+          readonly
         ></b-form-input>
       </b-form-group>
-      <b-form-group id="input-group-2" label="Price:" label-for="input-price">
+      <b-form-group id="input-group-3" label="Price:" label-for="input-price">
         <b-form-input
           id="input-price"
           type="number"
           v-model="form.product_price"
-          placeholder="Type the price"
-          required
+          :placeholder="price ? price : 'Product Price'"
+          readonly
         ></b-form-input>
       </b-form-group>
       <label class="label" for="textarea-state">Descriptions:</label>
@@ -26,73 +35,37 @@
         v-model="form.product_detail"
         :state="form.product_detail.length >= 100"
         placeholder="Describe your product min. 100 characters"
+        required
       ></b-form-textarea>
-      <b-form-group
-        id="input-group-3"
-        label="Category:"
-        label-for="input-category"
-      >
-        <b-form-select
-          id="input-category"
-          v-model="form.category_id"
-          @change="handleCategory"
-          :options="categories"
-          required
-        ></b-form-select>
-      </b-form-group>
-      <b-form-group id="input-group-4" label="Input product size:">
-        <p v-if="form.category_id === null">Choose category first</p>
-        <p v-else>Click size you want for this product</p>
-        <div id="input-group-4">
-          <div v-if="form.category_id === 2 || form.category_id === 3">
-            <b-button-group size="sm">
-              <b-button
-                v-for="(btn, idx) in buttonsForDrinks"
-                :key="idx"
-                :pressed.sync="btn.state"
-                @click="handleButton(btn)"
-                class="btn"
-                variant="warning"
-              >
-                {{ btn.caption }}
-              </b-button>
-            </b-button-group>
-          </div>
-          <div v-if="form.category_id === 4 || form.category_id === 5">
-            <b-button-group size="sm">
-              <b-button
-                v-for="(btn, idx) in buttonsForFoods"
-                :key="idx"
-                :pressed.sync="btn.state"
-                @click="handleButton(btn)"
-                class="btn"
-                variant="warning"
-              >
-                {{ btn.caption }}
-              </b-button>
-            </b-button-group>
-          </div>
-        </div>
-      </b-form-group>
-      <b-form-group id="input-group-5" label="Input delivery methods:">
-        <p v-if="form.product_size.length === 0">
-          Click size first for this product
-        </p>
-        <p v-else>Click methods you want for this product</p>
-        <div v-if="form.product_size.length > 0">
-          <b-button-group size="sm">
+      <b-form-group id="input-group-5" label="Input size:">
+        <p>Click size you want for this product</p>
+        <b-button-group size="sm">
+          <div v-if="size">
             <b-button
-              v-for="(del, idxs) in buttonsForDelivery"
-              :key="idxs"
-              :pressed.sync="del.stateDel"
-              @click="handleButtonDel(del)"
+              v-for="del in size"
+              :key="del"
               class="btn-del"
               variant="warning"
             >
-              {{ del.captionDel }}
+              {{ del }}
             </b-button>
-          </b-button-group>
-        </div>
+          </div>
+        </b-button-group>
+      </b-form-group>
+      <b-form-group id="input-group-6" label="Input delivery methods:">
+        <p>Click methods you want for this product</p>
+        <b-button-group size="sm">
+          <div v-if="delivery_methods">
+            <b-button
+              v-for="del in delivery_methods"
+              :key="del"
+              class="btn-del"
+              variant="warning"
+            >
+              {{ del }}
+            </b-button>
+          </div>
+        </b-button-group>
       </b-form-group>
       <b-button style="background-color: #6a4029;" @click="onSubmit" block
         >Submit</b-button
@@ -109,17 +82,23 @@ export default {
   name: 'RightPart',
   computed: {
     ...mapGetters({
+      product: 'getDataProductId',
       photo: 'getPhoto',
       start_delivery_hour: 'getStartDel',
       end_delivery_hour: 'getEndDel',
       stock_product: 'getStock',
-      products: 'getDataProduct'
+      products: 'getDataProduct',
+      name: 'getDatanameProduct',
+      price: 'getDatapriceProduct',
+      delivery_methods: 'getDatadeliveryMethods',
+      size: 'getsizeProduct'
     })
   },
   data() {
     return {
       message: null,
       form: {
+        product_id: null,
         product_name: '',
         product_price: null,
         product_detail: '',
@@ -151,36 +130,25 @@ export default {
       ]
     }
   },
-  // computed: {
-  //   ...mapGetters({
-  //     products: 'getDataProduct'
-  //   })
-  // },
   methods: {
-    // get() {
-    //   const lolo = []
-      
-    // },
-    ...mapActions(['setNewProduct', 'getProducts']),
+    ...mapActions(['setNewProduct', 'getProducts', 'getProductById']),
+    searchID(e) {
+      this.getProductById(e)
+    },
     handleCategory(e) {
       console.log(e)
       this.form.product_size = []
-      console.log(this.formLeft)
       if (this.form.category_id === 2 || this.form.category_id === 3) {
-        console.log(this.buttonsForDrinks)
         this.buttonsForDrinks.forEach(btn => {
           btn.state = false
         })
-        console.log(this.buttonsForDrinks)
       } else {
         this.buttonsForFoods.forEach(btn => {
           btn.state = false
         })
-        console.log(this.buttonsForFoods)
       }
     },
     handleButton(n) {
-      console.log(n)
       if (n.state === true) {
         this.form.product_size.push(n.caption)
       } else {
@@ -189,7 +157,6 @@ export default {
           1
         )
       }
-      console.log(this.form.product_size)
     },
     handleButtonDel(del) {
       if (del.stateDel === true) {
@@ -200,8 +167,6 @@ export default {
           1 // 2, 1
         )
       }
-      console.log(this.buttonsForDelivery)
-      console.log(this.form.delivery_methods)
     },
     makeToast(variant = null) {
       this.$bvToast.toast(`${this.message}`, {
@@ -212,7 +177,6 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault()
-      console.log(this.form)
       if (
         this.form.product_name.length < 10 &&
         this.form.product_detail.length < 100 &&
@@ -298,7 +262,7 @@ export default {
 #input-group-3,
 #input-group-4,
 #input-group-5,
-.label {
+#input-group-6 .label {
   color: #6a4029;
   font-weight: 700;
 }

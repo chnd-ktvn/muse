@@ -6,8 +6,8 @@
           id="input-name"
           v-model="form.product_name"
           type="text"
-          :state="form.product_name.length >= 10"
-          placeholder="Type product name min. 10 characters"
+          :state="form.product_name.length >= 5"
+          placeholder="Type product name min. 5 characters"
           required
         ></b-form-input>
       </b-form-group>
@@ -24,8 +24,8 @@
       <b-form-textarea
         id="textarea-state"
         v-model="form.product_detail"
-        :state="form.product_detail.length >= 100"
-        placeholder="Describe your product min. 100 characters"
+        :state="form.product_detail.length >= 15"
+        placeholder="Describe your product min. 15 characters"
       ></b-form-textarea>
       <b-form-group
         id="input-group-3"
@@ -155,22 +155,17 @@ export default {
     handleCategory(e) {
       console.log(e)
       this.form.product_size = []
-      console.log(this.formLeft)
       if (this.form.category_id === 2 || this.form.category_id === 3) {
-        console.log(this.buttonsForDrinks)
         this.buttonsForDrinks.forEach(btn => {
           btn.state = false
         })
-        console.log(this.buttonsForDrinks)
       } else {
         this.buttonsForFoods.forEach(btn => {
           btn.state = false
         })
-        console.log(this.buttonsForFoods)
       }
     },
     handleButton(n) {
-      console.log(n)
       if (n.state === true) {
         this.form.product_size.push(n.caption)
       } else {
@@ -179,7 +174,6 @@ export default {
           1
         )
       }
-      console.log(this.form.product_size)
     },
     handleButtonDel(del) {
       if (del.stateDel === true) {
@@ -190,8 +184,6 @@ export default {
           1 // 2, 1
         )
       }
-      console.log(this.buttonsForDelivery)
-      console.log(this.form.delivery_methods)
     },
     makeToast(variant = null) {
       this.$bvToast.toast(`${this.message}`, {
@@ -202,10 +194,9 @@ export default {
     },
     onSubmit(event) {
       event.preventDefault()
-      console.log(this.form)
       if (
-        this.form.product_name.length < 10 &&
-        this.form.product_detail.length < 100 &&
+        this.form.product_name.length < 5 &&
+        this.form.product_detail.length < 15 &&
         this.form.product_name === '' &&
         this.form.product_price === null &&
         this.form.product_detail === '' &&
@@ -220,8 +211,8 @@ export default {
         this.message = 'Please fill out the form first !'
         this.makeToast('danger')
       } else if (
-        this.form.product_name.length < 10 ||
-        this.form.product_detail.length < 100 ||
+        this.form.product_name.length < 5 ||
+        this.form.product_detail.length < 15 ||
         this.form.product_name === '' ||
         this.form.product_price === null ||
         this.form.product_detail === '' ||
@@ -300,8 +291,5 @@ p {
 .btn {
   margin: 0 10px;
   font-weight: 700;
-}
-.activee {
-  background-color: brown;
 }
 </style>

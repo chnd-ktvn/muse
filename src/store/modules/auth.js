@@ -7,8 +7,7 @@ export default {
   state: {
     user: {},
     userWIthId: [],
-    newUser: {},
-    // vuexDataUser: localStorage.getItem('vuex'),
+    status_reg: false,
     token: localStorage.getItem('token') || null
   },
   mutations: {
@@ -21,22 +20,26 @@ export default {
     },
     setUserWithId(state, payload) {
       state.userWIthId = payload
-      console.log(state.userWIthId)
     },
     setPhotoUser(state, payload) {
       state.photoUser = payload
-      console.log(state.photoUser)
     },
     delUser(state) {
       state.user = {}
       state.token = null
+    },
+    statusRegister(state) {
+      state.status_reg = true
+    },
+    statusLogin(state) {
+      state.status_reg = false
     }
   },
   actions: {
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://localhost:3000/user/login`, payload)
+          .post(`${process.env.VUE_APP_BASE_URL}/user/login`, payload)
           .then(result => {
             context.commit('setUser', result.data.data)
             localStorage.setItem('token', result.data.data.token)
@@ -50,7 +53,7 @@ export default {
     signup(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://localhost:3000/user/register`, payload)
+          .post(`${process.env.VUE_APP_BASE_URL}/user/register`, payload)
           .then(result => {
             context.commit('setNewUser', result.data.data)
             resolve(result)
@@ -65,13 +68,23 @@ export default {
       context.commit('delUser')
       router.push('/login')
     },
+    activationEmail(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(`${process.env.VUE_APP_BASE_URL}/user/activation`, payload)
+          .then(result => {
+            resolve(result)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
     getUserById(context) {
       return new Promise((resolve, reject) => {
         axios
           .get(`${process.env.VUE_APP_BASE_URL}/user/${context.state.userId}`)
           .then(result => {
-            console.log(result.data.data)
-            console.log(result.data.data[0].photo)
             context.commit('setPhotoUser', result.data.data[0].photo)
             context.commit('setUserWithId', result.data.data)
             resolve(result)
@@ -94,7 +107,7 @@ export default {
       )
     },
     interceptorResponse(context) {
-      ;('interceptor response works')
+      console.log('interceptor response works')
       axios.interceptors.response.use(
         function(response) {
           return response
@@ -121,8 +134,11 @@ export default {
     getDataUserById(state) {
       return state.userWIthId
     },
-    getDataUser(state){
+    getDataUser(state) {
       return state.user
+    },
+    statusReg(state) {
+      return state.status_reg
     }
   }
 }

@@ -18,71 +18,19 @@
                 MuseCoffee
               </b-navbar-brand>
             </b-navbar>
-            <b-navbar-nav style="margin: 0 auto;">
+            <b-navbar-nav v-if="status_reg" style="margin: 0 auto;">
+              <h5 style="margin: 20px 0; color: #6a4029;"><b>Register</b></h5>
+            </b-navbar-nav>
+            <b-navbar-nav v-else style="margin: 0 auto;">
               <h5 style="margin: 20px 0; color: #6a4029;"><b>Login</b></h5>
             </b-navbar-nav>
           </b-row>
           <b-row>
-            <b-container>
-              <b-form @submit.prevent="onSubmit" class="form">
-                <b-form-group
-                  id="input-group-1"
-                  label="Email address:"
-                  label-for="input-email"
-                >
-                  <b-form-input
-                    id="input-email"
-                    v-model="form.user_email"
-                    type="email"
-                    placeholder="Enter your email address"
-                    required
-                  ></b-form-input>
-                </b-form-group>
-                <b-form-group
-                  id="input-group-2"
-                  label="Password:"
-                  label-for="input-password"
-                >
-                  <b-form-input
-                    id="input-password"
-                    v-model="form.user_password"
-                    type="password"
-                    placeholder="Enter your passsword"
-                    required
-                  ></b-form-input>
-                </b-form-group>
-                <b-button
-                  type="submit"
-                  class="button"
-                  style="width: 100%; background-color: #FFBA33; border-radius: 15px; border: none; color: black;"
-                  >Login</b-button
-                >
-                <b-button
-                  class="button"
-                  style="width: 100%; background-color: white; border: 3px solid silver; color: black; margin: 20px 0; border-radius: 15px;"
-                  ><img
-                    class="google-img"
-                    src="../assets/google-logo.png"
-                    alt="Google Logo's"
-                  />
-                  Login with google</b-button
-                >
-                <p style="margin: 20px 0; text-align: center">
-                  Don't have an account?
-                </p>
-                <b-button
-                  class="button"
-                  style="width: 100%; background-color: #6a4029; border-radius: 15px; margin: 20px 0; border: none;"
-                  ><router-link to="/signup" class="link"
-                    >Sign up here
-                  </router-link></b-button
-                >
-                <b-button block style="border-radius: 15px;"
-                  ><router-link to="/" class="link"
-                    >Cancel
-                  </router-link></b-button
-                >
-              </b-form>
+            <b-container v-if="status_reg">
+              <RegisterForm class="form" />
+            </b-container>
+            <b-container v-else>
+              <LoginForm class="form" />
             </b-container>
           </b-row>
         </b-container>
@@ -92,47 +40,62 @@
   </div>
 </template>
 <script>
+import LoginForm from '../components/Auth/LoginForm.vue'
+import RegisterForm from '../components/Auth/RegisterForm.vue'
 import FooterP from '../components/_base/FooterP.vue'
-import { mapActions } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'Login',
   components: {
+    LoginForm,
+    RegisterForm,
     FooterP
   },
-  data() {
-    return {
-      form: {
-        user_email: '',
-        user_password: ''
-      },
-      msg: ''
-    }
+  computed: {
+    ...mapGetters({
+      status_reg: 'statusReg'
+    })
   },
   methods: {
-    makeToast(variant = null) {
-      this.$bvToast.toast(`${this.msg}`, {
-        title: 'MuseCoffee',
-        variant: variant,
-        solid: true
-      })
-    },
-    ...mapActions(['login']),
-    onSubmit() {
-      this.login(this.form)
-        .then(result => {
-          this.msg = result.data.msg
-          this.makeToast('success')
-          console.log(result)
-          if (result.data.data.user_role) {
-            this.$router.push('/product')
-          }
-        })
-        .catch(error => {
-          this.msg = error.response.data.msg
-          this.makeToast('danger')
-        })
-    }
+    ...mapMutations(['statusLogin'])
+  },
+  created() {
+    this.statusLogin()
   }
+  // data() {
+  //   return {
+  //     form: {
+  //       user_email: '',
+  //       user_password: ''
+  //     },
+  //     msg: ''
+  //   }
+  // },
+  // methods: {
+  //   makeToast(variant = null) {
+  //     this.$bvToast.toast(`${this.msg}`, {
+  //       title: 'MuseCoffee',
+  //       variant: variant,
+  //       solid: true
+  //     })
+  //   },
+  //   ...mapActions(['login']),
+  //   onSubmit() {
+  //     this.login(this.form)
+  //       .then(result => {
+  //         this.msg = result.data.msg
+  //         this.makeToast('success')
+  //         console.log(result)
+  //         if (result.data.data.user_role) {
+  //           this.$router.push('/product')
+  //         }
+  //       })
+  //       .catch(error => {
+  //         this.msg = error.response.data.msg
+  //         this.makeToast('danger')
+  //       })
+  //   }
+  // }
 }
 </script>
 <style scoped>
@@ -152,7 +115,16 @@ export default {
   height: 100%;
   object-fit: cover;
 }
-.google-img {
+@media screen and (max-width: 768px) {
+  .img {
+    height: 50vh;
+    object-fit: cover;
+  }
+  .form {
+    margin: 10vh 0;
+  }
+}
+/* .google-img {
   width: 4vh;
 }
 .form {
@@ -176,5 +148,5 @@ export default {
   .form {
     margin: 10vh 0;
   }
-}
+} */
 </style>

@@ -86,6 +86,7 @@
                         : 'http://localhost:3000/' + user.photo
                     "
                   />
+                  
                 </a>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
