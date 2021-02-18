@@ -128,7 +128,7 @@ export default {
   name: 'Header',
   data() {
     return {
-      env: process.env.VUE_APP_URL,
+      env: process.env.VUE_APP_BASE_URL,
       product: '',
       isHidden: true
     }

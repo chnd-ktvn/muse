@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      env: process.env.VUE_APP_URL
+      env: process.env.VUE_APP_BASE_URL
     }
   },
   computed: {

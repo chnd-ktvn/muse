@@ -63,7 +63,7 @@ export default {
   },
   data() {
     return {
-      env: process.env.VUE_APP_URL,
+      env: process.env.VUE_APP_BASE_URL,
       message: '',
       imgDefault: 'photo-camera-black-tool4.png',
       // img: null,
