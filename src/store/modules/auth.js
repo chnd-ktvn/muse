@@ -8,6 +8,7 @@ export default {
     user: {},
     userWIthId: [],
     status_reg: false,
+    status_input: false,
     token: localStorage.getItem('token') || null
   },
   mutations: {
@@ -33,6 +34,12 @@ export default {
     },
     statusLogin(state) {
       state.status_reg = false
+    },
+    statusInput(state) {
+      state.status_input = true
+    },
+    statusNonInput(state) {
+      state.status_input = false
     }
   },
   actions: {
@@ -63,9 +70,25 @@ export default {
           })
       })
     },
+    deleteAllData() {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(
+            `http://${process.env.VUE_APP_BASE_URL}/user/deleteAllDataRedis`
+          )
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
     logout(context) {
       localStorage.removeItem('token')
+      localStorage.removeItem('cart')
       context.commit('delUser')
+      context.dispatch('deleteAllData')
       router.push('/login')
     },
     activationEmail(context, payload) {
@@ -144,6 +167,9 @@ export default {
     },
     statusReg(state) {
       return state.status_reg
+    },
+    statusInputAdd(state) {
+      return state.status_input
     }
   }
 }

@@ -2,7 +2,6 @@
   <b-container>
     <form>
       <b-col class="preview">
-        <!-- <p>{{ productByIdAdm }}</p> -->
         <b-img
           v-if="img || productByIdAdm.photo"
           :src="

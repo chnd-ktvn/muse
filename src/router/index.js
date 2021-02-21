@@ -3,14 +3,14 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import ActivateAccount from '../views/ActivateAccount.vue'
-import Profile from '../views/Profile.vue'
+// import Profile from '../views/Profile.vue'
 import Product from '../views/ProductAdmin.vue'
 import CreateProduct from '../views/CreateProduct.vue'
 import EditProduct from '../views/EditProduct.vue'
-import CreateCoupon from '../views/CreateCoupon.vue'
+// import CreateCoupon from '../views/CreateCoupon.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import Payment from '../views/Payment.vue'
-import History from '../views/History.vue'
+// import Histor y from '../views/History.vue'
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -32,12 +32,12 @@ const routes = [
     name: 'ActivateAccount',
     component: ActivateAccount
   },
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile,
-    meta: { requiresAuth: true }
-  },
+  // {
+  //   path: '/profile',
+  //   name: 'Profile',
+  //   component: Profile,
+  //   meta: { requiresAuth: true }
+  // },
   {
     path: '/product',
     name: 'product',
@@ -55,12 +55,12 @@ const routes = [
     component: EditProduct,
     meta: { requiresAuth: true }
   },
-  {
-    path: '/createCoupon',
-    name: 'createCoupon',
-    component: CreateCoupon,
-    meta: { requiresAuth: true }
-  },
+  // {
+  //   path: '/createCoupon',
+  //   name: 'createCoupon',
+  //   component: CreateCoupon,
+  //   meta: { requiresAuth: true }
+  // },
   {
     path: '/productDetail/:id',
     name: 'productDetail',
@@ -71,13 +71,13 @@ const routes = [
     name: 'payment',
     component: Payment,
     meta: { requiresAuth: true }
-  },
-  {
-    path: '/history',
-    name: 'history',
-    component: History,
-    meta: { requiresAuth: true }
   }
+  // {
+  //   path: '/history',
+  //   name: 'history',
+  //   component: History,
+  //   meta: { requiresAuth: true }
+  // }
 ]
 
 const router = new VueRouter({

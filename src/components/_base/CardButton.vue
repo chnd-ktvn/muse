@@ -16,6 +16,7 @@
               : `http://${env}/fileuploads/product_photo/` + item.photo
           "
           alt="product photo"
+          @click="detailProduct(item.product_id)"
         />
         <b-card-text class="text">
           <b>{{ item.product_name }}</b> <br />

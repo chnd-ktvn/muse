@@ -10,14 +10,73 @@
               <b-container>
                 <h4>Order Summary</h4>
                 <b-row>
-                  <b-col class="transaction">You order is in here</b-col>
+                  <b-col class="transaction">
+                    <div
+                      class="row orders"
+                      v-for="(item, index) in cart"
+                      :key="index"
+                    >
+                      <b-col lg="3" md="3" sm="3" class="preview">
+                        <b-img
+                          :src="
+                            item.photo === ''
+                              ? require('./../assets/latte.png')
+                              : `http://${env}/fileuploads/product_photo/` +
+                                item.photo
+                          "
+                          alt="Coffee"
+                        />
+                      </b-col>
+                      <b-col lg="6" md="6" sm="6">
+                        <b-row>
+                          <p>
+                            <b>{{ item.product_name }}</b>
+                          </p>
+                        </b-row>
+                        <b-row>
+                          <b-col
+                            v-if="
+                              item.category_id === 2 || item.category_id === 3
+                            "
+                          >
+                            <p class="size" v-if="item.dataR.length !== 0">
+                              x {{ item.dataR.length }} {{ item.dataR[0] }}
+                            </p>
+                            <p class="size" v-if="item.dataL.length !== 0">
+                              x {{ item.dataL.length }} {{ item.dataL[0] }}
+                            </p>
+                            <p class="size" v-if="item.dataXL.length !== 0">
+                              x {{ item.dataXL.length }} {{ item.dataXL[0] }}
+                            </p>
+                          </b-col>
+                          <b-col v-else>
+                            <p class="size" v-if="item.data250gr.length !== 0">
+                              x{{ item.data250gr.length }}
+                              {{ item.data250gr[0] }}
+                            </p>
+                            <p class="size" v-if="item.data300gr.length !== 0">
+                              x{{ item.data300gr.length }}
+                              {{ item.data300gr[0] }}
+                            </p>
+                            <p class="size" v-if="item.data500gr.length !== 0">
+                              x{{ item.data500gr.length }}
+                              {{ item.data500gr[0] }}
+                            </p>
+                          </b-col>
+                        </b-row>
+                      </b-col>
+                      <b-col lg="3" md="3" sm="3">
+                        <p>Rp {{ item.product_total }}</p>
+                      </b-col>
+                    </div>
+                  </b-col>
                 </b-row>
                 <b-row>
                   <b-col>
                     <p class="left">SUBTOTAL</p>
                   </b-col>
                   <b-col>
-                    <p class="right">SUBTOTAL</p>
+                    <p class="right">Rp {{ subtotal }}</p>
                   </b-col>
                 </b-row>
                 <b-row>
@@ -25,7 +84,7 @@
                     <p class="left">TAX & FEES</p>
                   </b-col>
                   <b-col>
-                    <p class="right">TAX & FEES</p>
+                    <p class="right">Rp {{ tax }}</p>
                   </b-col>
                 </b-row>
                 <b-row>
@@ -33,7 +92,7 @@
                     <p class="left">SHIPPING</p>
                   </b-col>
                   <b-col>
-                    <p class="right">SHIPPING</p>
+                    <p class="right">Rp {{ shipping }}</p>
                   </b-col>
                 </b-row>
                 <b-row>
@@ -41,7 +100,7 @@
                     <p class="left">TOTAL</p>
                   </b-col>
                   <b-col>
-                    <p class="right">TOTAL</p>
+                    <p class="right">Rp {{ subtotal + tax + shipping }}</p>
                   </b-col>
                 </b-row>
               </b-container>
@@ -53,14 +112,43 @@
                   <p class="left title">Address details</p>
                 </b-col>
                 <b-col>
-                  <p class="right title">Edit</p>
+                  <p class="right title edit" @click="onInput()">Edit</p>
                 </b-col>
               </b-row>
-              <b-row class="data">
+              <b-row class="data" v-if="status_input">
+                <b-container>
+                  <b-col>
+                    <b-row>
+                      <p>
+                        <b>Delivery to {{ user.user_email }}</b>
+                      </p>
+                    </b-row>
+                    <b-row>
+                      <b-form-textarea
+                        type="text"
+                        placeholder="Enter your address"
+                        class="address"
+                        v-model="form.address"
+                      ></b-form-textarea>
+                    </b-row>
+                    <b-row>
+                      <b-form-input
+                        type="number"
+                        placeholder="Enter your phone number"
+                        class="address"
+                        v-model="form.phone_number"
+                      ></b-form-input>
+                    </b-row>
+                  </b-col>
+                </b-container>
+              </b-row>
+              <b-row class="data" v-else>
                 <b-container>
                   <b-col>
                     <b-row
-                      ><p><b>Delivery to Iskandar Street</b></p></b-row
+                      ><p>
+                        <b>Delivery to {{ user.user_email }}</b>
+                      </p></b-row
                     >
                     <b-row>
                       <p class="address">
@@ -68,7 +156,7 @@
                         Jakarta
                       </p>
                     </b-row>
-                    <b-row>+62 81348287878</b-row>
+                    <b-row>6281348287878</b-row>
                   </b-col>
                 </b-container>
               </b-row>
@@ -85,21 +173,29 @@
                       name="radio-options-slots"
                     >
                       <b-col>
-                        <b-form-radio value="first">pertama</b-form-radio>
+                        <b-form-radio value="card">Card</b-form-radio>
                       </b-col>
                       <b-col>
-                        <b-form-radio value="first">kedua</b-form-radio>
+                        <b-form-radio value="bank_account"
+                          >Bank Account</b-form-radio
+                        >
                       </b-col>
                       <b-col>
-                        <b-form-radio value="first">ketiga</b-form-radio>
+                        <b-form-radio value="cod"
+                          >Cash on Delivery</b-form-radio
+                        >
                       </b-col>
                     </b-form-radio-group>
                   </b-form-group>
                 </b-container>
-                <b-button block class="btn">
-                  <router-link to="/history" class="link"
-                    >Confirm and Pay</router-link
-                  >
+                <b-button block class="btn confirm" @click="confirm()"
+                  >Confirm and Pay
+                  <!-- <router-link to="/history" class="link"
+                    ></router-link
+                  > -->
+                </b-button>
+                <b-button block class="btn cancel" @click="cancelBtn">
+                  <router-link to="/product" class="link">Cancel</router-link>
                 </b-button>
               </b-row>
             </b-col>
@@ -113,22 +209,88 @@
 <script>
 import Header from '../components/_base/Header.vue'
 import Footer from '../components/_base/Footer.vue'
+import { mapMutations, mapGetters } from 'vuex'
+import SweetAlert from '.././mixins/SweetAlert.js'
 export default {
   name: 'Home',
+  mixins: [SweetAlert],
   components: {
     Header,
     Footer
   },
   data() {
     return {
-      selected: ''
+      env: process.env.VUE_APP_BASE_URL,
+      selected: '',
+      cart: [],
+      tax: 10000,
+      shipping: 9000,
+      form: {
+        address: 'Km 5 refinery road oppsite re public road, effurun, Jakarta',
+        phone_number: 6281348287878
+      }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'getDataUser',
+      status_input: 'statusInputAdd'
+    }),
+    subtotal() {
+      let total = 0
+      this.cart.forEach(el => {
+        total += el.product_total
+      })
+      return total
+    }
+  },
+  created() {
+    let getCart = localStorage.getItem('cart')
+    getCart = JSON.parse(getCart)
+    if (getCart) {
+      this.cart = getCart
+    } else {
+      this.cart = []
+    }
+    console.log(this.cart)
+    this.statusNonInput()
+  },
+  methods: {
+    ...mapMutations(['statusNonInput', 'statusInput']),
+    cancelBtn() {
+      localStorage.removeItem('cart')
+      this.$router.push('/product')
+    },
+    confirm() {
+      if (this.selected === '') {
+        this.alertError({
+          title:
+            '<span style="font-family: cursive;">You haven\'t chose any payment methods.<span>'
+        })
+      } else {
+        const data = {
+          address: this.form.address,
+          phone_number: '+' + this.form.phone_number,
+          payment_methode: this.selected,
+          user_id: this.user.user_id,
+          total: this.subtotal + this.tax + this.shipping
+        }
+        console.log(data)
+        this.alertSuccess({
+          title:
+            '<span style="font-family: cursive;">Your order will be processed.<span>'
+        })
+        localStorage.removeItem('cart')
+      }
+    },
+    onInput() {
+      this.statusInput()
     }
   }
 }
 </script>
 <style scoped>
 .wrapper {
-  /* position: sticky; */
   z-index: 10;
   top: 0;
 }
@@ -137,11 +299,11 @@ export default {
   background-size: cover;
   margin: -20px 0;
   color: black;
+  font-family: cursive;
 }
 h2 {
   color: white;
-  margin-top: -50px;
-  margin-bottom: 30px;
+  margin: 0 0 15px 0;
   font-family: cursive;
   text-align: left;
 }
@@ -154,9 +316,31 @@ h2 {
 .title {
   margin-top: 20px;
 }
+.edit {
+  cursor: pointer;
+}
 h4 {
   margin: 20px 0;
   font-weight: 700;
+}
+.preview {
+  margin: 0 auto;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+img {
+  margin: 0 auto;
+  border-radius: 20px;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+p.size {
+  font-size: 10px;
+  /* margin: -2px 0; */
+  margin-left: -15px;
 }
 .order p {
   font-size: 16px;
@@ -178,15 +362,34 @@ p.address {
   margin-top: 20px;
 }
 .btn {
+  border: none;
   margin-top: 20px;
+}
+.confirm {
+  background-color: #6a4029;
+}
+.confirm:hover {
+  background-color: #6a4029;
+  box-shadow: 0px 6px 25px rgba(106, 64, 41, 0.7);
+}
+.cancel {
+  background-color: #ffba33;
+}
+.cancel:hover {
+  background-color: #ffba33;
+  box-shadow: 0px 6px 25px rgba(106, 64, 41, 0.7);
 }
 .link {
   color: white;
   text-decoration: none;
 }
 .transaction {
+  height: 25%;
   overflow: auto;
 }
+/* .orders {
+  border: 1px solid rosybrown;
+} */
 /* @media screen and (max-width: 768px) {
   .text-center {
     font-size: 20px;

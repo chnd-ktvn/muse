@@ -126,7 +126,6 @@ export default {
     ]),
     // 'deleteProductById'
     ...mapMutations(['changePage', 'changeSortingBy', 'changeCategory']),
-    ...mapMutations(['lala']),
 
     getProductByCategory(category_id) {
       this.active = !this.active
