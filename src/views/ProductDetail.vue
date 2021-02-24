@@ -297,7 +297,7 @@ export default {
           product_name: this.product.product_name,
           product_price: this.product.product_price,
           category_id: this.product.category_id,
-          product_qty: 1,
+          product_qty: this.form.qty,
           product_total: this.form.qty * this.product.product_price,
           delivery_methods: this.form.delivery_methods,
           now: this.form.now,
@@ -355,6 +355,10 @@ export default {
 }
 .linkkk {
   color: black;
+}
+.linkkk:hover {
+  color: white;
+  text-decoration: none;
 }
 .preview {
   margin: 0 auto;

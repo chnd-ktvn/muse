@@ -16,7 +16,7 @@
                       v-for="(item, index) in cart"
                       :key="index"
                     >
-                      <b-col lg="3" md="3" sm="3" class="preview">
+                      <b-col class="preview">
                         <b-img
                           :src="
                             item.photo === ''
@@ -27,7 +27,7 @@
                           alt="Coffee"
                         />
                       </b-col>
-                      <b-col lg="6" md="6" sm="6">
+                      <b-col>
                         <b-row>
                           <p>
                             <b>{{ item.product_name }}</b>
@@ -65,7 +65,7 @@
                           </b-col>
                         </b-row>
                       </b-col>
-                      <b-col lg="3" md="3" sm="3">
+                      <b-col class="preview">
                         <p>Rp {{ item.product_total }}</p>
                       </b-col>
                     </div>
@@ -209,7 +209,7 @@
 <script>
 import Header from '../components/_base/Header.vue'
 import Footer from '../components/_base/Footer.vue'
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 import SweetAlert from '.././mixins/SweetAlert.js'
 export default {
   name: 'Home',
@@ -228,7 +228,8 @@ export default {
       form: {
         address: 'Km 5 refinery road oppsite re public road, effurun, Jakarta',
         phone_number: 6281348287878
-      }
+      },
+      msg: null
     }
   },
   computed: {
@@ -256,31 +257,86 @@ export default {
     this.statusNonInput()
   },
   methods: {
+    ...mapActions(['sendOrder', 'sendDetailOrders']),
     ...mapMutations(['statusNonInput', 'statusInput']),
     cancelBtn() {
       localStorage.removeItem('cart')
       this.$router.push('/product')
     },
     confirm() {
-      if (this.selected === '') {
+      if (this.cart.length === 0) {
         this.alertError({
           title:
-            '<span style="font-family: cursive;">You haven\'t chose any payment methods.<span>'
+            '<span style="font-family: cursive;">You haven\'t chose any product yet.<span>'
         })
       } else {
-        const data = {
-          address: this.form.address,
-          phone_number: '+' + this.form.phone_number,
-          payment_methode: this.selected,
-          user_id: this.user.user_id,
-          total: this.subtotal + this.tax + this.shipping
+        if (this.selected !== '') {
+          const data = {
+            address: this.form.address,
+            phone_number: '+' + this.form.phone_number,
+            tax: this.tax,
+            shipping: this.shipping,
+            payment_method: this.selected,
+            user_id: this.user.user_id,
+            history_total: this.subtotal + this.tax + this.shipping
+          }
+          this.sendOrder(data)
+            .then(result => {
+              this.msg = result.data.msg
+              console.log(this.msg)
+              if (result.data.data.history_id) {
+                let dataDetailHistory = []
+                for (let i = 0; i < this.cart.length; i++) {
+                  const dataDetail = {
+                    user_id: this.user.user_id,
+                    product_id: this.cart[i].product_id,
+                    qty: this.cart[i].product_qty,
+                    photo: this.cart[i].photo,
+                    product_name: this.cart[i].product_name,
+                    product_price: this.cart[i].product_price,
+                    history_id: result.data.data.history_id
+                  }
+                  dataDetailHistory.push(dataDetail)
+                }
+                this.sendDetailOrders(dataDetailHistory)
+                  .then(result => {
+                    this.msg = result.data.msg
+                    this.alertSuccess({
+                      title:
+                        '<span style="font-family: cursive;">' +
+                        this.msg +
+                        '<span>'
+                    })
+                    // localStorage.removeItem('cart')
+                  })
+                  .catch(error => {
+                    console.log(error)
+                    this.msg = error.response.data.msg
+                    this.alertError({
+                      title:
+                        '<span style="font-family: cursive;">' +
+                        this.msg +
+                        '<span>'
+                    })
+                  })
+                this.cart = []
+                localStorage.removeItem('cart')
+              }
+            })
+            .catch(error => {
+              this.msg = error.response.data.msg
+              this.alertError({
+                title:
+                  '<span style="font-family: cursive;">' + this.msg + '<span>'
+              })
+            })
+          // localStorage.removeItem('cart')
+        } else {
+          this.alertError({
+            title:
+              '<span style="font-family: cursive;">You haven\'t chose any payment method.<span>'
+          })
         }
-        console.log(data)
-        this.alertSuccess({
-          title:
-            '<span style="font-family: cursive;">Your order will be processed.<span>'
-        })
-        localStorage.removeItem('cart')
       }
     },
     onInput() {
@@ -313,6 +369,9 @@ h2 {
   background-color: white;
   border-radius: 20px;
 }
+.order {
+  height: 100%;
+}
 .title {
   margin-top: 20px;
 }
@@ -323,9 +382,13 @@ h4 {
   margin: 20px 0;
   font-weight: 700;
 }
+.transaction {
+  height: 190px;
+  /* 260, 190 */
+  overflow: auto;
+}
 .preview {
   margin: 0 auto;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -337,10 +400,8 @@ img {
   height: 60px;
   object-fit: cover;
 }
-p.size {
-  font-size: 10px;
-  /* margin: -2px 0; */
-  margin-left: -15px;
+.size {
+  font-size: 3px;
 }
 .order p {
   font-size: 16px;
@@ -382,10 +443,6 @@ p.address {
 .link {
   color: white;
   text-decoration: none;
-}
-.transaction {
-  height: 25%;
-  overflow: auto;
 }
 /* .orders {
   border: 1px solid rosybrown;

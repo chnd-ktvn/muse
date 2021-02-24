@@ -42,13 +42,14 @@
       </b-form-group>
       <b-form-group id="input-group-4" label="Input product size:">
         <div v-if="isShow">
-          <p>
+          <p>Click size you want for this product</p>
+          <!-- <p>
             Click '<span
               style="color: purple; cursor: pointer;"
               @click="handleEdit"
               >edit</span
             >' to edit size product
-          </p>
+          </p> -->
           <b-button-group size="sm">
             <b-button
               v-for="btn in productByIdAdm.product_size.split(',')"
@@ -108,13 +109,14 @@
       </b-form-group>
       <b-form-group id="input-group-5" label="Input delivery methods:">
         <div v-if="isShowDel">
-          <p>
+          <p>Click methods you want for this product</p>
+          <!-- <p>
             Click '<span
               style="color: purple; cursor: pointer;"
               @click="handleEditDel"
               >edit</span
             >' to edit delivery method
-          </p>
+          </p> -->
           <b-button-group size="sm">
             <b-button
               v-for="btn in productByIdAdm.delivery_methods.split(',')"

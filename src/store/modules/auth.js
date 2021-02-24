@@ -28,6 +28,8 @@ export default {
     delUser(state) {
       state.user = {}
       state.token = null
+      // state.product = ''
+      // console.log(state.product)
     },
     statusRegister(state) {
       state.status_reg = true
@@ -145,10 +147,9 @@ export default {
             error.response.data.status === 403 &&
             (error.response.data.msg === 'invalid token' ||
               error.response.data.msg === 'invalid signature' ||
-              error.response.msg === 'jwt expired')
+              error.response.data.msg === 'jwt expired')
           ) {
             context.dispatch('logout')
-            // alert(error.response.data.msg)
           }
           return Promise.reject(error)
         }

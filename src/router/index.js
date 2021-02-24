@@ -10,7 +10,7 @@ import EditProduct from '../views/EditProduct.vue'
 // import CreateCoupon from '../views/CreateCoupon.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import Payment from '../views/Payment.vue'
-// import Histor y from '../views/History.vue'
+import History from '../views/History.vue'
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -71,13 +71,13 @@ const routes = [
     name: 'payment',
     component: Payment,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: History,
+    meta: { requiresAuth: true }
   }
-  // {
-  //   path: '/history',
-  //   name: 'history',
-  //   component: History,
-  //   meta: { requiresAuth: true }
-  // }
 ]
 
 const router = new VueRouter({

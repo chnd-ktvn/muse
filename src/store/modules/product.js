@@ -24,7 +24,8 @@ export default {
     priceProduct: null,
     photoProduct: '',
     sizeProduct: null,
-    productById: {}
+    productById: {},
+    history: []
   },
   mutations: {
     setProduct(state, payload) {
@@ -52,6 +53,7 @@ export default {
     searchProductBy(state, payload) {
       state.page = 1
       state.product = payload
+      console.log(state.product)
     },
     setForm(state, payload) {
       state.form = payload
@@ -62,15 +64,12 @@ export default {
     },
     getProductId(state, payload) {
       state.productId = payload.data[0]
-      // state.productById = payload.data[0]
-      // state.deliveryMethods = payload.data[0].delivery_methods.split(',')
-      // state.sizeProduct = payload.data[0].product_size.split(',')
-      // state.nameProduct = payload.data[0].product_name
-      // state.priceProduct = payload.data[0].product_price
-      // state.photoProduct = payload.data[0].photo
     },
     getProductIdAdm(state, payload) {
       state.productById = payload.data[0]
+    },
+    setHistoryOrder(state, payload) {
+      state.history = payload.data
     }
   },
   actions: {
@@ -158,7 +157,6 @@ export default {
         context.state.page = 1
       }
       return new Promise((resolve, reject) => {
-        // categoryId=${context.state.category_id}
         axios
           .get(
             `http://${process.env.VUE_APP_BASE_URL}/product/searchByName/?name=${context.state.product}&orderBy=${context.state.sort}&page=${context.state.page}&limit=${context.state.limit}`
@@ -177,7 +175,6 @@ export default {
         axios
           .post(`http://${process.env.VUE_APP_BASE_URL}/product/`, payload)
           .then(response => {
-            // context.commit('settingNewProduct', response.data)
             resolve(response)
           })
           .catch(error => {
@@ -186,7 +183,6 @@ export default {
       })
     },
     editProductById(context, payload) {
-      console.log(payload)
       return new Promise((resolve, reject) => {
         axios
           .patch(
@@ -235,6 +231,59 @@ export default {
             `http://${process.env.VUE_APP_BASE_URL}/product/deleteProduct/${payload}`
           )
           .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    sendOrder(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`http://${process.env.VUE_APP_BASE_URL}/history/`, payload)
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    sendDetailOrders(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`http://${process.env.VUE_APP_BASE_URL}/detail/`, payload)
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getHistoryOrder(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`http://${process.env.VUE_APP_BASE_URL}/history/${payload}`)
+          .then(response => {
+            console.log(response.data)
+            context.commit('setHistoryOrder', response.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    deleteHistoryById(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .patch(
+            `http://${process.env.VUE_APP_BASE_URL}/history/?user_id=${payload.user_id}&id=${payload.id}`
+          )
+          .then(response => {
+            console.log(response.data)
             resolve(response)
           })
           .catch(error => {
@@ -298,6 +347,9 @@ export default {
     // productById
     getProductAdm(state) {
       return state.productById
+    },
+    getHistory(state) {
+      return state.history
     }
   }
 }
