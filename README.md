@@ -7,7 +7,7 @@
     <a href="https://github.com/chnd-ktvn/muse">Request Feature</a>
   </p>
 
-![Image Banner](https://raw.githubusercontent.com/chnd-ktvn/muse/master/src/assets/banner/muse-img.jpg)
+![Image Banner](https://raw.githubusercontent.com/chnd-ktvn/muse/master/src/assets/muse-img.jpg)
 
 ## About The Project
 
