@@ -1,14 +1,17 @@
 <h1 align='center'>Vue JS - #Muse Coffee</h1>
   <p align="center">
-    ·
+    <a href="https://muse-coffee-net.netlify.app/">View Demo</a>
+    .
     <a href="https://github.com/chnd-ktvn/muse">Report Bug</a>
     ·
     <a href="https://github.com/chnd-ktvn/muse">Request Feature</a>
   </p>
 
+![Image Banner](https://raw.githubusercontent.com/chnd-ktvn/muse/master/src/assets/banner/muse-img.jpg)
+
 ## About The Project
 
-#background_projek.
+#Muse Coffee is a food and beverage sales application that has the main feature of displaying a list of products, orders, and order history.
 
 ## Built With
 
@@ -29,7 +32,7 @@
 4. Add .env file at root folder project
 
 ```sh
-VUE_APP_BASE_URL = [Backend API]
+VUE_APP_BASE_URL = localhost:3000
 ```
 
 5. Type `npm run serve`
