@@ -11,7 +11,7 @@
 
 ## About The Project
 
-#Muse Coffee is a food and beverage sales application that has the main feature of displaying a list of products, orders, and order history.
+# Muse Coffee is a food and beverage sales application that has the main feature of displaying a list of products, orders, and order history.
 
 ## Built With
 
