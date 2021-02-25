@@ -75,15 +75,16 @@
             <span class="chat-notif">
               <img class="img chat" src="../../assets/ic-chat.png" />
             </span>
+
             <b-nav-item-dropdown right>
               <template #button-content>
                 <a>
                   <img
                     class="img user-img"
                     :src="
-                      user.photo === ''
+                      user.photo === null || user.photo === ''
                         ? require('../../assets/coffee.png')
-                        : `http://${env}/fileuploads/user_photo/` + user.photo
+                        : `${env}/fileuploads/user_photo/` + user.photo
                     "
                   />
                 </a>

@@ -15,9 +15,9 @@
             <b-col class="preview">
               <b-img
                 :src="
-                  product.photo === ''
+                  product.photo === null || product.photo === ''
                     ? require('./../assets/latte.png')
-                    : `http://${env}/fileuploads/product_photo/` + product.photo
+                    : `${env}/fileuploads/product_photo/` + product.photo
                 "
                 alt="Coffee"
               />
@@ -126,9 +126,9 @@
               <b-col class="preview">
                 <b-img
                   :src="
-                    product.photo === ''
+                    product.photo === null || product.photo === ''
                       ? require('./../assets/latte.png')
-                      : `http://${env}/fileuploads/product_photo/` +
+                      : `${env}/fileuploads/product_photo/` +
                         product.photo
                   "
                   alt="Small Cup of Coffee"

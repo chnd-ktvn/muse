@@ -48,7 +48,7 @@ export default {
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://${process.env.VUE_APP_BASE_URL}/user/login`, payload)
+          .post(`${process.env.VUE_APP_BASE_URL}/user/login`, payload)
           .then(result => {
             context.commit('setUser', result.data.data)
             localStorage.setItem('token', result.data.data.token)
@@ -62,7 +62,7 @@ export default {
     signup(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`http://${process.env.VUE_APP_BASE_URL}/user/register`, payload)
+          .post(`${process.env.VUE_APP_BASE_URL}/user/register`, payload)
           .then(result => {
             context.commit('setNewUser', result.data.data)
             resolve(result)
@@ -76,7 +76,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .delete(
-            `http://${process.env.VUE_APP_BASE_URL}/user/deleteAllDataRedis`
+            `${process.env.VUE_APP_BASE_URL}/user/deleteAllDataRedis`
           )
           .then(response => {
             resolve(response)
@@ -97,7 +97,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://${process.env.VUE_APP_BASE_URL}/user/activation`,
+            `${process.env.VUE_APP_BASE_URL}/user/activation`,
             payload
           )
           .then(result => {
@@ -112,7 +112,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get(
-            `http://${process.env.VUE_APP_BASE_URL}/user/${context.state.userId}`
+            `${process.env.VUE_APP_BASE_URL}/user/${context.state.userId}`
           )
           .then(result => {
             context.commit('setPhotoUser', result.data.data[0].photo)

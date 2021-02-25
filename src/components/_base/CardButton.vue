@@ -11,9 +11,9 @@
       >
         <img
           :src="
-            item.photo === ''
+            item.photo === null || item.photo === ''
               ? require('../../assets/latte.png')
-              : `http://${env}/fileuploads/product_photo/` + item.photo
+              : `${env}/fileuploads/product_photo/` + item.photo
           "
           alt="product photo"
           @click="detailProduct(item.product_id)"

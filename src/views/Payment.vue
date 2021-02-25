@@ -19,9 +19,9 @@
                       <b-col class="preview">
                         <b-img
                           :src="
-                            item.photo === ''
+                            item.photo === null || item.photo === ''
                               ? require('./../assets/latte.png')
-                              : `http://${env}/fileuploads/product_photo/` +
+                              : `${env}/fileuploads/product_photo/` +
                                 item.photo
                           "
                           alt="Coffee"

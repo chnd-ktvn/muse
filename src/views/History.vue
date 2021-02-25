@@ -34,9 +34,9 @@
                       <b-col class="preview">
                         <b-img
                           :src="
-                            order.photo === ''
+                            order.photo === null || order.photo === ''
                               ? require('./../assets/latte.png')
-                              : `http://${env}/fileuploads/product_photo/` +
+                              : `${env}/fileuploads/product_photo/` +
                                 order.photo
                           "
                           alt="Coffee"

@@ -7,7 +7,7 @@
           :src="
             img
               ? img
-              : `http://${env}/fileuploads/product_photo/` +
+              : `${env}/fileuploads/product_photo/` +
                 productByIdAdm.photo
           "
           class="img"

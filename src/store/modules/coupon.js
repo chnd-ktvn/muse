@@ -18,7 +18,7 @@ export default {
     getCoupon(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://${process.env.VUE_APP_BASE_URL}/coupon/`)
+          .get(`${process.env.VUE_APP_BASE_URL}/coupon/`)
           .then(response => {
             context.commit('setCoupon', response.data.data)
             resolve(response)
@@ -32,7 +32,7 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://${process.env.VUE_APP_BASE_URL}/coupon/deleteCoupon/${payload}`
+            `${process.env.VUE_APP_BASE_URL}/coupon/deleteCoupon/${payload}`
           )
           .then(response => {
             resolve(response)

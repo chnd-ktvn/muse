@@ -5,9 +5,9 @@
         <b-img
           v-if="img"
           :src="
-            img === ''
+            img === null || ''
               ? require('../../assets/coffee.png')
-              : `http://${env}/fileuploads/product_photo/` + img
+              : `${env}/fileuploads/product_photo/` + img
           "
           class="img"
         ></b-img>
