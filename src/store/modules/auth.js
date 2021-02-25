@@ -75,9 +75,7 @@ export default {
     deleteAllData() {
       return new Promise((resolve, reject) => {
         axios
-          .delete(
-            `${process.env.VUE_APP_BASE_URL}/user/deleteAllDataRedis`
-          )
+          .delete(`${process.env.VUE_APP_BASE_URL}/user/deleteAllDataRedis`)
           .then(response => {
             resolve(response)
           })
@@ -96,10 +94,7 @@ export default {
     activationEmail(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .patch(
-            `${process.env.VUE_APP_BASE_URL}/user/activation`,
-            payload
-          )
+          .patch(`${process.env.VUE_APP_BASE_URL}/user/activation`, payload)
           .then(result => {
             resolve(result)
           })
@@ -111,9 +106,7 @@ export default {
     getUserById(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get(
-            `${process.env.VUE_APP_BASE_URL}/user/${context.state.userId}`
-          )
+          .get(`${process.env.VUE_APP_BASE_URL}/user/${context.state.userId}`)
           .then(result => {
             context.commit('setPhotoUser', result.data.data[0].photo)
             context.commit('setUserWithId', result.data.data)
@@ -147,7 +140,8 @@ export default {
             error.response.data.status === 403 &&
             (error.response.data.msg === 'invalid token' ||
               error.response.data.msg === 'invalid signature' ||
-              error.response.data.msg === 'jwt expired')
+              error.response.data.msg === 'jwt expired' ||
+              error.response.data.msg === 'jwt malformed')
           ) {
             context.dispatch('logout')
           }
