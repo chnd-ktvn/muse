@@ -1,4 +1,4 @@
-<h1 align='center'>Vue JS - #Muse Coffee</h1>
+<h1 align='center'>Vue JS - Muse Coffee</h1>
   <p align="center">
     <a href="https://muse-coffee-net.netlify.app/">View Demo</a>
     .
